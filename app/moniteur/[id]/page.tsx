@@ -32,7 +32,7 @@ const AVIS = [
   { prenom: "Antoine B.", note: 5, date: "Il y a 1 mois", texte: "J'avais déjà raté 2 fois l'examen avant de trouver Sophie. Elle a su identifier mes erreurs et me faire progresser rapidement." },
 ]
 
-const DISPOS = {
+const DISPOS: Record<string, string[]> = {
   "Lun": ["Matin", "Après-midi"],
   "Mar": ["Matin", "Soir"],
   "Mer": ["Après-midi", "Soir"],

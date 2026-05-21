@@ -119,3 +119,11 @@ input[type="range"]::-moz-range-thumb {
   box-shadow: 0 0 12px rgba(0,245,160,0.5);
   border: 2px solid rgba(255,255,255,0.2);
 }
+
+@keyframes neonFlicker {
+  0%, 95%, 100% { opacity: 1; }
+  96% { opacity: 0.8; }
+  97% { opacity: 1; }
+  98% { opacity: 0.6; }
+  99% { opacity: 1; }
+}

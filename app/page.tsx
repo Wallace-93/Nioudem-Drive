@@ -12,6 +12,7 @@ export default function Home() {
           <span className="font-light text-foreground"> Drive</span>
         </div>
         <div className="hidden md:flex items-center gap-8">
+          <Link href="/vision" className="text-muted-foreground text-sm font-medium hover:text-primary transition-colors">Notre vision</Link>
           <Link href="#comment" className="text-muted-foreground text-sm font-medium hover:text-primary transition-colors">Comment ca marche</Link>
           <Link href="#features" className="text-muted-foreground text-sm font-medium hover:text-primary transition-colors">Fonctionnalites</Link>
           <Link href="#moniteurs" className="text-muted-foreground text-sm font-medium hover:text-primary transition-colors">Moniteurs</Link>
@@ -22,12 +23,12 @@ export default function Home() {
       </nav>
 
       {/* HERO */}
-      <section className="min-h-screen flex items-center justify-center pt-32 pb-16 px-4 relative overflow-hidden">
+      <section className="min-h-screen flex flex-col items-center justify-center pt-32 pb-16 px-4 relative overflow-hidden">
         {/* Background effects */}
         <div className="absolute inset-0 z-0">
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_0%,rgba(0,245,160,0.08)_0%,transparent_70%)]" />
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_40%_at_80%_50%,rgba(0,212,255,0.06)_0%,transparent_60%)]" />
-          <div 
+          <div
             className="absolute inset-0 opacity-[0.04]"
             style={{
               backgroundImage: "linear-gradient(#00F5A0 1px, transparent 1px), linear-gradient(90deg, #00F5A0 1px, transparent 1px)",
@@ -35,54 +36,86 @@ export default function Home() {
             }}
           />
         </div>
-        
-        <div className="relative z-10 text-center max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-6 bg-primary/10 border border-border text-xs font-semibold text-primary tracking-wide">
-            <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z"/></svg>
-            La plateforme des moniteurs independants
+
+        {/* Contenu principal — layout flex row */}
+        <div className="relative z-10 w-full max-w-6xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-12">
+
+          {/* Panneau néon gauche */}
+          <div className="hidden lg:flex flex-col items-center justify-center flex-shrink-0">
+            <div className="relative px-6 py-5 rounded-2xl border-2 border-[#00F5A0] bg-[#00F5A0]/5"
+              style={{ boxShadow: "0 0 20px rgba(0,245,160,0.4), 0 0 60px rgba(0,245,160,0.15), inset 0 0 20px rgba(0,245,160,0.05)" }}>
+              <div className="absolute top-2 left-4 right-4 h-0.5 rounded-full bg-[#00F5A0]"
+                style={{ boxShadow: "0 0 8px #00F5A0, 0 0 20px #00F5A0" }} />
+              <div className="absolute bottom-2 left-4 right-4 h-0.5 rounded-full bg-[#00F5A0]"
+                style={{ boxShadow: "0 0 8px #00F5A0, 0 0 20px #00F5A0" }} />
+              <p className="text-[#00F5A0] font-black text-xl tracking-widest uppercase text-center leading-tight"
+                style={{
+                  textShadow: "0 0 10px #00F5A0, 0 0 30px #00F5A0, 0 0 60px rgba(0,245,160,0.5)",
+                  animation: "neonFlicker 3s infinite"
+                }}>
+                Revolution<br />is working.
+              </p>
+              {["top-2 left-2", "top-2 right-2", "bottom-2 left-2", "bottom-2 right-2"].map((pos) => (
+                <div key={pos} className={`absolute ${pos} w-2 h-2 rounded-full bg-[#00F5A0]`}
+                  style={{ boxShadow: "0 0 6px #00F5A0, 0 0 12px #00F5A0" }} />
+              ))}
+            </div>
+            <div className="w-0.5 h-8 bg-gradient-to-b from-[#00F5A0]/60 to-transparent mt-1" />
+            <div className="w-4 h-0.5 bg-[#00F5A0]/40 rounded-full" />
           </div>
-          
-          <div className="relative inline-block pt-16">
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-black leading-tight tracking-tight mb-6 text-balance origin-top animate-swing relative">
-              Trouvez le{" "}
-              <span className="bg-gradient-to-r from-[#00F5A0] to-[#00D4FF] bg-clip-text text-transparent">moniteur</span>
-              <br />fait pour vous.
-            </h1>
+
+          {/* Contenu central */}
+          <div className="text-center flex-1">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-6 bg-primary/10 border border-border text-xs font-semibold text-primary tracking-wide">
+              <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z"/></svg>
+              La plateforme des moniteurs independants
+            </div>
+
+            <div className="relative inline-block pt-16">
+              <h1 className="text-4xl md:text-6xl lg:text-7xl font-black leading-tight tracking-tight mb-6 text-balance origin-top animate-swing relative">
+                Trouvez le{" "}
+                <span className="bg-gradient-to-r from-[#00F5A0] to-[#00D4FF] bg-clip-text text-transparent">moniteur</span>
+                <br />fait pour vous.
+              </h1>
+            </div>
+
+            <p className="text-lg text-muted-foreground max-w-xl mx-auto mb-10 leading-relaxed text-pretty">
+              Nous mettons en relation des élèves avec des enseignants de la conduite automobile diplômés en Île-de-France. Choisissez votre enseignant selon vos besoins, réservez en ligne et suivez votre progression — le tout grâce à un matching intelligent pensé pour vous.
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <button className="px-8 py-3.5 rounded-xl text-base font-bold bg-gradient-to-r from-[#00F5A0] to-[#00D4FF] text-background hover:shadow-[0_8px_30px_rgba(0,245,160,0.3)] hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                Trouver un moniteur
+              </button>
+              <button className="px-8 py-3.5 rounded-xl text-base font-semibold bg-transparent text-foreground border border-border hover:border-primary hover:text-primary hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+                Je suis moniteur
+              </button>
+            </div>
           </div>
-          
-          <p className="text-lg text-muted-foreground max-w-xl mx-auto mb-10 leading-relaxed text-pretty">
-            {"Nous mettons en relation eleves et moniteurs diplomes en Ile-de-France. Matching intelligent, reservation en ligne, progression suivie."}
-          </p>
-          
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="px-8 py-3.5 rounded-xl text-base font-bold bg-gradient-to-r from-[#00F5A0] to-[#00D4FF] text-background hover:shadow-[0_8px_30px_rgba(0,245,160,0.3)] hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-              Trouver un moniteur
-            </button>
-            <button className="px-8 py-3.5 rounded-xl text-base font-semibold bg-transparent text-foreground border border-border hover:border-primary hover:text-primary hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
-              Je suis moniteur
-            </button>
+
+          {/* Espace droit équilibré */}
+          <div className="hidden lg:block w-48 flex-shrink-0" />
+        </div>
+
+        {/* Stats */}
+        <div className="relative z-10 flex flex-wrap gap-8 justify-center mt-16 pt-12 border-t border-border max-w-3xl w-full mx-auto">
+          <div className="text-center">
+            <div className="text-3xl font-extrabold bg-gradient-to-r from-[#00F5A0] to-[#00D4FF] bg-clip-text text-transparent">500+</div>
+            <div className="text-xs text-muted-foreground font-medium mt-1">Moniteurs certifies</div>
           </div>
-          
-          {/* Stats */}
-          <div className="flex flex-wrap gap-8 justify-center mt-16 pt-12 border-t border-border">
-            <div className="text-center">
-              <div className="text-3xl font-extrabold bg-gradient-to-r from-[#00F5A0] to-[#00D4FF] bg-clip-text text-transparent">500+</div>
-              <div className="text-xs text-muted-foreground font-medium mt-1">Moniteurs certifies</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-extrabold bg-gradient-to-r from-[#00F5A0] to-[#00D4FF] bg-clip-text text-transparent">4.8</div>
-              <div className="text-xs text-muted-foreground font-medium mt-1">Note moyenne</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-extrabold bg-gradient-to-r from-[#00F5A0] to-[#00D4FF] bg-clip-text text-transparent">15min</div>
-              <div className="text-xs text-muted-foreground font-medium mt-1">Pour etre mis en relation</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-extrabold bg-gradient-to-r from-[#00F5A0] to-[#00D4FF] bg-clip-text text-transparent">0 EUR</div>
-              <div className="text-xs text-muted-foreground font-medium mt-1">{"Pour s'inscrire"}</div>
-            </div>
+          <div className="text-center">
+            <div className="text-3xl font-extrabold bg-gradient-to-r from-[#00F5A0] to-[#00D4FF] bg-clip-text text-transparent">4.8</div>
+            <div className="text-xs text-muted-foreground font-medium mt-1">Note moyenne</div>
+          </div>
+          <div className="text-center">
+            <div className="text-3xl font-extrabold bg-gradient-to-r from-[#00F5A0] to-[#00D4FF] bg-clip-text text-transparent">15min</div>
+            <div className="text-xs text-muted-foreground font-medium mt-1">Pour etre mis en relation</div>
+          </div>
+          <div className="text-center">
+            <div className="text-3xl font-extrabold bg-gradient-to-r from-[#00F5A0] to-[#00D4FF] bg-clip-text text-transparent">0 EUR</div>
+            <div className="text-xs text-muted-foreground font-medium mt-1">{"Pour s'inscrire"}</div>
           </div>
         </div>
       </section>

@@ -1,7 +1,11 @@
 "use client"
 
+export const dynamic = "force-dynamic"
+
 import { useState } from "react"
 import { Navbar } from "@/components/navbar"
+import { createClient } from "@/lib/supabase-client"
+import { useRouter } from "next/navigation"
 
 type FormData = {
   // Step 1
@@ -68,6 +72,10 @@ const creneauxOptions = [
 
 export default function InscriptionPage() {
   const [step, setStep] = useState(1)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const supabase = createClient()
+  const router = useRouter()
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [formData, setFormData] = useState<FormData>({
     prenom: "",
@@ -147,11 +155,46 @@ export default function InscriptionPage() {
     if (step > 1) setStep(step - 1)
   }
 
-  const handleSubmit = () => {
-    if (validateStep3()) {
-      console.log("Form submitted:", formData)
-      alert("Inscription reussie ! Nous allons trouver votre moniteur ideal.")
+  const handleSubmit = async () => {
+    if (!validateStep3()) return
+    setLoading(true)
+    setError(null)
+
+    // 1. Créer le compte auth
+    const { data: authData, error: authError } = await supabase.auth.signUp({
+      email: formData.email,
+      password: formData.password,
+    })
+
+    if (authError || !authData.user) {
+      setError(authError?.message || "Erreur lors de la création du compte.")
+      setLoading(false)
+      return
     }
+
+    const userId = authData.user.id
+
+    // 2. Créer le profil
+    await supabase.from("profiles").insert({
+      id: userId,
+      role: "eleve",
+      prenom: formData.prenom,
+      nom: formData.nom,
+      telephone: formData.telephone,
+    })
+
+    // 3. Créer le profil élève
+    await supabase.from("eleves").insert({
+      user_id: userId,
+      niveau: formData.niveau,
+      type_permis: formData.typePermis,
+      zone_recherche: formData.zone,
+      budget_max: formData.budget,
+      specialites: formData.specialites,
+      creneaux: formData.creneaux,
+    })
+
+    router.push("/dashboard")
   }
 
   const steps = [

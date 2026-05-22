@@ -219,22 +219,29 @@ export default function InscriptionMoniteurPage() {
     setLoading(true)
     setError(null)
 
-    // 1. Créer le compte auth
     const { data: authData, error: authError } = await supabase.auth.signUp({
       email: formData.email,
       password: formData.password,
     })
 
     if (authError || !authData.user) {
-      setError(authError?.message || "Erreur lors de la création du compte.")
+      const msg = authError?.message || ""
+      if (msg.includes("already registered") || msg.includes("already exists")) {
+        setError("Un compte existe déjà avec cet email. Connectez-vous ou utilisez un autre email.")
+      } else if (msg.includes("password")) {
+        setError("Mot de passe invalide — minimum 8 caractères.")
+      } else if (msg.includes("email")) {
+        setError("Adresse email invalide.")
+      } else {
+        setError("Erreur lors de la création du compte : " + (authError?.message || "erreur inconnue"))
+      }
       setLoading(false)
       return
     }
 
     const userId = authData.user.id
 
-    // 2. Créer le profil
-    await supabase.from("profiles").insert({
+    const { error: profileError } = await supabase.from("profiles").insert({
       id: userId,
       role: "moniteur",
       prenom: formData.prenom,
@@ -242,8 +249,13 @@ export default function InscriptionMoniteurPage() {
       telephone: formData.telephone,
     })
 
-    // 3. Créer le profil moniteur
-    await supabase.from("moniteurs").insert({
+    if (profileError) {
+      setError("Compte créé mais erreur profil : " + profileError.message + ". Contactez le support.")
+      setLoading(false)
+      return
+    }
+
+    const { error: moniteurError } = await supabase.from("moniteurs").insert({
       user_id: userId,
       diplome: formData.diplome,
       specialites: formData.specialites,
@@ -253,6 +265,12 @@ export default function InscriptionMoniteurPage() {
       boite_auto: formData.boiteVitesses === "automatique" || formData.boiteVitesses === "les-deux",
       verifie: false,
     })
+
+    if (moniteurError) {
+      setError("Compte créé mais erreur profil moniteur : " + moniteurError.message)
+      setLoading(false)
+      return
+    }
 
     setLoading(false)
     setSuccess(true)

@@ -159,14 +159,23 @@ export default function InscriptionPage() {
     })
 
     if (authError || !authData.user) {
-      setError(authError?.message || "Erreur lors de la création du compte.")
+      const msg = authError?.message || ""
+      if (msg.includes("already registered") || msg.includes("already exists")) {
+        setError("Un compte existe déjà avec cet email. Connectez-vous ou utilisez un autre email.")
+      } else if (msg.includes("password")) {
+        setError("Mot de passe invalide — minimum 8 caractères.")
+      } else if (msg.includes("email")) {
+        setError("Adresse email invalide.")
+      } else {
+        setError("Erreur lors de la création du compte : " + (authError?.message || "erreur inconnue"))
+      }
       setLoading(false)
       return
     }
 
     const userId = authData.user.id
 
-    await supabase.from("profiles").insert({
+    const { error: profileError } = await supabase.from("profiles").insert({
       id: userId,
       role: "eleve",
       prenom: formData.prenom,
@@ -174,7 +183,13 @@ export default function InscriptionPage() {
       telephone: formData.telephone,
     })
 
-    await supabase.from("eleves").insert({
+    if (profileError) {
+      setError("Compte créé mais erreur profil : " + profileError.message + ". Contactez le support.")
+      setLoading(false)
+      return
+    }
+
+    const { error: eleveError } = await supabase.from("eleves").insert({
       user_id: userId,
       niveau: formData.niveau,
       type_permis: formData.typePermis,
@@ -183,6 +198,12 @@ export default function InscriptionPage() {
       specialites: formData.specialites,
       creneaux: formData.creneaux,
     })
+
+    if (eleveError) {
+      setError("Compte créé mais erreur données : " + eleveError.message)
+      setLoading(false)
+      return
+    }
 
     setLoading(false)
     setSuccess(true)

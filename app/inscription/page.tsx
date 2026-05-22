@@ -160,14 +160,18 @@ export default function InscriptionPage() {
 
     if (authError || !authData.user) {
       const msg = authError?.message || ""
-      if (msg.includes("already registered") || msg.includes("already exists")) {
+      const code = (authError as any)?.code || ""
+      console.error("Auth error:", authError)
+      if (msg.includes("already registered") || msg.includes("already exists") || code === "user_already_exists") {
         setError("Un compte existe déjà avec cet email. Connectez-vous ou utilisez un autre email.")
-      } else if (msg.includes("password")) {
+      } else if (msg.includes("password") || code === "weak_password") {
         setError("Mot de passe invalide — minimum 8 caractères.")
-      } else if (msg.includes("email")) {
+      } else if (msg.includes("email") || code === "invalid_email") {
         setError("Adresse email invalide.")
+      } else if (msg.includes("rate limit") || code === "over_email_send_rate_limit") {
+        setError("Trop de tentatives. Attendez quelques minutes avant de réessayer.")
       } else {
-        setError("Erreur lors de la création du compte : " + (authError?.message || "erreur inconnue"))
+        setError(`Erreur : ${msg || JSON.stringify(authError) || "inconnue"}. Vérifiez vos informations et réessayez.`)
       }
       setLoading(false)
       return

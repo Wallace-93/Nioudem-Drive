@@ -388,7 +388,7 @@ export default function InscriptionMoniteurPage() {
                       value={formData.prenom}
                       onChange={(e) => updateField("prenom", e.target.value)}
                       className={`w-full px-4 py-3 rounded-xl bg-background border ${errors.prenom ? "border-destructive" : "border-border"} focus:border-primary focus:outline-none transition-colors`}
-                      placeholder="Jean"
+                      id="prenom" name="prenom" autoComplete="given-name" placeholder="Jean"
                     />
                     {errors.prenom && <p className="text-destructive text-xs mt-1">{errors.prenom}</p>}
                   </div>
@@ -424,7 +424,7 @@ export default function InscriptionMoniteurPage() {
                     value={formData.telephone}
                     onChange={(e) => updateField("telephone", e.target.value)}
                     className={`w-full px-4 py-3 rounded-xl bg-background border ${errors.telephone ? "border-destructive" : "border-border"} focus:border-primary focus:outline-none transition-colors`}
-                    placeholder="06 12 34 56 78"
+                    id="telephone" name="telephone" autoComplete="tel" placeholder="06 12 34 56 78"
                   />
                   {errors.telephone && <p className="text-destructive text-xs mt-1">{errors.telephone}</p>}
                 </div>

@@ -313,44 +313,44 @@ export default function InscriptionPage() {
                 <h2 className="text-xl font-bold mb-6">Informations personnelles</h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium mb-2">Prénom</label>
-                    <input type="text" value={formData.prenom} onChange={(e) => updateField("prenom", e.target.value)}
+                    <label htmlFor="prenom" className="block text-sm font-medium mb-2">Prénom</label>
+                    <input id="prenom" name="prenom" type="text" value={formData.prenom} onChange={(e) => updateField("prenom", e.target.value)} autoComplete="given-name"
                       className={`w-full px-4 py-3 rounded-xl bg-background border ${errors.prenom ? "border-destructive" : "border-border"} focus:border-primary focus:outline-none transition-colors`}
                       placeholder="Jean" />
                     {errors.prenom && <p className="text-destructive text-xs mt-1">{errors.prenom}</p>}
                   </div>
                   <div>
-                    <label className="block text-sm font-medium mb-2">Nom</label>
-                    <input type="text" value={formData.nom} onChange={(e) => updateField("nom", e.target.value)}
+                    <label htmlFor="nom" className="block text-sm font-medium mb-2">Nom</label>
+                    <input id="nom" name="nom" type="text" value={formData.nom} onChange={(e) => updateField("nom", e.target.value)} autoComplete="family-name"
                       className={`w-full px-4 py-3 rounded-xl bg-background border ${errors.nom ? "border-destructive" : "border-border"} focus:border-primary focus:outline-none transition-colors`}
                       placeholder="Dupont" />
                     {errors.nom && <p className="text-destructive text-xs mt-1">{errors.nom}</p>}
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-2">Email</label>
-                  <input type="email" value={formData.email} onChange={(e) => updateField("email", e.target.value)}
+                  <label htmlFor="email" className="block text-sm font-medium mb-2">Email</label>
+                  <input id="email" name="email" type="email" value={formData.email} onChange={(e) => updateField("email", e.target.value)} autoComplete="email"
                     className={`w-full px-4 py-3 rounded-xl bg-background border ${errors.email ? "border-destructive" : "border-border"} focus:border-primary focus:outline-none transition-colors`}
                     placeholder="jean.dupont@email.com" />
                   {errors.email && <p className="text-destructive text-xs mt-1">{errors.email}</p>}
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-2">Téléphone</label>
-                  <input type="tel" value={formData.telephone} onChange={(e) => updateField("telephone", e.target.value)}
+                  <label htmlFor="telephone" className="block text-sm font-medium mb-2">Téléphone</label>
+                  <input id="telephone" name="telephone" type="tel" value={formData.telephone} onChange={(e) => updateField("telephone", e.target.value)} autoComplete="tel"
                     className={`w-full px-4 py-3 rounded-xl bg-background border ${errors.telephone ? "border-destructive" : "border-border"} focus:border-primary focus:outline-none transition-colors`}
                     placeholder="06 12 34 56 78" />
                   {errors.telephone && <p className="text-destructive text-xs mt-1">{errors.telephone}</p>}
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-2">Mot de passe</label>
-                  <input type="password" value={formData.password} onChange={(e) => updateField("password", e.target.value)}
+                  <label htmlFor="password" className="block text-sm font-medium mb-2">Mot de passe</label>
+                  <input id="password" name="password" type="password" value={formData.password} onChange={(e) => updateField("password", e.target.value)} autoComplete="new-password"
                     className={`w-full px-4 py-3 rounded-xl bg-background border ${errors.password ? "border-destructive" : "border-border"} focus:border-primary focus:outline-none transition-colors`}
                     placeholder="Minimum 8 caractères" />
                   {errors.password && <p className="text-destructive text-xs mt-1">{errors.password}</p>}
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-2">Confirmer le mot de passe</label>
-                  <input type="password" value={formData.confirmPassword} onChange={(e) => updateField("confirmPassword", e.target.value)}
+                  <label htmlFor="confirmPassword" className="block text-sm font-medium mb-2">Confirmer le mot de passe</label>
+                  <input id="confirmPassword" name="confirmPassword" type="password" value={formData.confirmPassword} onChange={(e) => updateField("confirmPassword", e.target.value)} autoComplete="new-password"
                     className={`w-full px-4 py-3 rounded-xl bg-background border ${errors.confirmPassword ? "border-destructive" : "border-border"} focus:border-primary focus:outline-none transition-colors`}
                     placeholder="Répétez votre mot de passe" />
                   {errors.confirmPassword && <p className="text-destructive text-xs mt-1">{errors.confirmPassword}</p>}
@@ -447,8 +447,8 @@ export default function InscriptionPage() {
               <div className="space-y-8">
                 <h2 className="text-xl font-bold mb-6">Disponibilités et zone</h2>
                 <div>
-                  <label className="block text-sm font-medium mb-2">Zone de conduite</label>
-                  <input type="text" value={formData.zone} onChange={(e) => updateField("zone", e.target.value)}
+                  <label htmlFor="zone" className="block text-sm font-medium mb-2">Zone de conduite</label>
+                  <input id="zone" name="zone" type="text" value={formData.zone} onChange={(e) => updateField("zone", e.target.value)} autoComplete="address-level2"
                     className={`w-full px-4 py-3 rounded-xl bg-background border ${errors.zone ? "border-destructive" : "border-border"} focus:border-primary focus:outline-none transition-colors`}
                     placeholder="Ville ou code postal (ex: Paris, 75001)" />
                   {errors.zone && <p className="text-destructive text-xs mt-1">{errors.zone}</p>}

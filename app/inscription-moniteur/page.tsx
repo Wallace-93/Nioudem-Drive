@@ -5,6 +5,9 @@ export const dynamic = "force-dynamic"
 import { useState, useRef } from "react"
 import { Navbar } from "@/components/navbar"
 import Image from "next/image"
+import { createClient } from "@/lib/supabase-client"
+import { useRouter } from "next/navigation"
+import Link from "next/link"
 
 type FormData = {
   // Step 1
@@ -86,6 +89,11 @@ const creneaux = ["Matin", "Apres-midi", "Soir"]
 export default function InscriptionMoniteurPage() {
   const [step, setStep] = useState(1)
   const [errors, setErrors] = useState<Record<string, string>>({})
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [success, setSuccess] = useState(false)
+  const supabase = createClient()
+  const router = useRouter()
   const [photoPreview, setPhotoPreview] = useState<string | null>(null)
   const [justificatifName, setJustificatifName] = useState<string | null>(null)
   const [isDragging, setIsDragging] = useState(false)
@@ -206,11 +214,48 @@ export default function InscriptionMoniteurPage() {
     if (step > 1) setStep(step - 1)
   }
 
-  const handleSubmit = () => {
-    if (validateStep3()) {
-      console.log("Form submitted:", formData)
-      alert("Inscription reussie ! Votre profil moniteur sera verifie sous 48h.")
+  const handleSubmit = async () => {
+    if (!validateStep3()) return
+    setLoading(true)
+    setError(null)
+
+    // 1. Créer le compte auth
+    const { data: authData, error: authError } = await supabase.auth.signUp({
+      email: formData.email,
+      password: formData.password,
+    })
+
+    if (authError || !authData.user) {
+      setError(authError?.message || "Erreur lors de la création du compte.")
+      setLoading(false)
+      return
     }
+
+    const userId = authData.user.id
+
+    // 2. Créer le profil
+    await supabase.from("profiles").insert({
+      id: userId,
+      role: "moniteur",
+      prenom: formData.prenom,
+      nom: formData.nom,
+      telephone: formData.telephone,
+    })
+
+    // 3. Créer le profil moniteur
+    await supabase.from("moniteurs").insert({
+      user_id: userId,
+      diplome: formData.diplome,
+      specialites: formData.specialites,
+      tarif_horaire: formData.tarif,
+      zone: formData.ville,
+      rayon_km: parseInt(formData.rayon) || 15,
+      boite_auto: formData.boiteVitesses === "automatique" || formData.boiteVitesses === "les-deux",
+      verifie: false,
+    })
+
+    setLoading(false)
+    setSuccess(true)
   }
 
   const steps = [
@@ -218,6 +263,38 @@ export default function InscriptionMoniteurPage() {
     { num: 2, label: "Profil professionnel" },
     { num: 3, label: "Zone et disponibilites" },
   ]
+
+  if (success) {
+    return (
+      <div className="font-sans text-foreground min-h-screen flex flex-col">
+        <Navbar />
+        <div className="flex-1 flex items-center justify-center px-4 pt-24 pb-16">
+          <div className="w-full max-w-md text-center">
+            <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[#00F5A0] to-[#00D4FF] flex items-center justify-center mx-auto mb-6">
+              <svg className="w-10 h-10 text-background" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <h1 className="text-3xl font-black tracking-tight mb-3">
+              Votre profil est{" "}
+              <span className="bg-gradient-to-r from-[#00F5A0] to-[#00D4FF] bg-clip-text text-transparent">
+                en cours de vérification !
+              </span>
+            </h1>
+            <p className="text-muted-foreground leading-relaxed mb-2">
+              Merci <strong className="text-foreground">{formData.prenom}</strong>, votre inscription a bien été prise en compte.
+            </p>
+            <p className="text-muted-foreground leading-relaxed mb-8">
+              Notre équipe va vérifier votre diplôme et activer votre profil sous <strong className="text-foreground">48h</strong>. Vous serez recontacté à l&apos;adresse <strong className="text-foreground">{formData.email}</strong>.
+            </p>
+            <Link href="/" className="inline-block px-6 py-3 rounded-xl text-sm font-bold bg-gradient-to-r from-[#00F5A0] to-[#00D4FF] text-background hover:opacity-90 active:scale-95 transition-all">
+              Retour à l&apos;accueil
+            </Link>
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="font-sans text-foreground min-h-screen">
@@ -714,9 +791,18 @@ export default function InscriptionMoniteurPage() {
                 <button
                   type="button"
                   onClick={handleSubmit}
-                  className="px-10 py-4 rounded-xl text-base font-bold bg-gradient-to-r from-[#00F5A0] to-[#00D4FF] text-background hover:opacity-90 transition-opacity shadow-lg shadow-primary/20"
+                  disabled={loading}
+                  className="px-10 py-4 rounded-xl text-base font-bold bg-gradient-to-r from-[#00F5A0] to-[#00D4FF] text-background hover:opacity-90 active:scale-95 transition-all shadow-lg shadow-primary/20 disabled:opacity-50 flex items-center gap-2"
                 >
-                  Creer mon profil moniteur
+                  {loading ? (
+                    <>
+                      <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
+                      </svg>
+                      Inscription en cours...
+                    </>
+                  ) : "Créer mon profil moniteur"}
                 </button>
               )}
             </div>

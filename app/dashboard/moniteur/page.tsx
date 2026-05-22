@@ -209,9 +209,29 @@ export default function DashboardMoniteur() {
                           <div className="text-xs text-muted-foreground">{new Date(r.date_heure).toLocaleDateString("fr-FR", { weekday: "short", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}</div>
                         </div>
                       </div>
-                      <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-2 flex-wrap justify-end">
                         <span className={`text-xs font-semibold px-2 py-1 rounded-full border ${colors[r.statut]}`}>{labels[r.statut]}</span>
                         <span className="text-sm font-bold">{r.montant}€</span>
+                        {r.statut === "en_attente" && (
+                          <div className="flex gap-2">
+                            <button
+                              onClick={async () => {
+                                await supabase.from("reservations").update({ statut: "confirme" }).eq("id", r.id)
+                                setReservations(prev => prev.map(res => res.id === r.id ? { ...res, statut: "confirme" } : res))
+                              }}
+                              className="px-3 py-1.5 rounded-lg text-xs font-bold bg-gradient-to-r from-[#00F5A0] to-[#00D4FF] text-background hover:opacity-90 active:scale-95 transition-all">
+                              ✓ Confirmer
+                            </button>
+                            <button
+                              onClick={async () => {
+                                await supabase.from("reservations").update({ statut: "refuse" }).eq("id", r.id)
+                                setReservations(prev => prev.map(res => res.id === r.id ? { ...res, statut: "refuse" } : res))
+                              }}
+                              className="px-3 py-1.5 rounded-lg text-xs font-semibold border border-red-500/30 text-red-400 hover:bg-red-500/10 active:scale-95 transition-all">
+                              ✗ Refuser
+                            </button>
+                          </div>
+                        )}
                       </div>
                     </div>
                   )

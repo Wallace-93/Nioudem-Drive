@@ -307,7 +307,7 @@ export default function Resultats() {
                       className="px-4 py-2 rounded-xl text-sm font-semibold border border-border hover:border-primary hover:text-primary active:scale-95 transition-all text-center whitespace-nowrap">
                       Voir profil
                     </Link>
-                    <Link href={`/inscription`}
+                    <Link href={`/reserver/${m.id}`}
                       className="px-4 py-2 rounded-xl text-sm font-bold bg-gradient-to-r from-[#00F5A0] to-[#00D4FF] text-background hover:opacity-90 active:scale-95 transition-all text-center whitespace-nowrap">
                       Réserver
                     </Link>

@@ -125,7 +125,7 @@ export default function Resultats() {
           *,
           profiles (prenom, nom, avatar_url)
         `)
-        .eq("vérifié", true)
+        .eq("verifie", true)
         .order("note_moyenne", { ascending: false })
 
       if (error || !data || data.length === 0) {

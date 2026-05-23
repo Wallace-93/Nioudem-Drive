@@ -279,7 +279,7 @@ export default function InscriptionMoniteurPage() {
       body: JSON.stringify({
         type: "nouveau_moniteur_admin",
         data: {
-          emailAdmin: "nioudem.contact@gmail.com",
+          emailAdmin: "fallies.project@gmail.com",
           prenomMoniteur: formData.prenom,
           nomMoniteur: formData.nom,
           diplome: formData.diplome,

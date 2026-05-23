@@ -78,6 +78,22 @@ export default function AdminPage() {
   const router = useRouter()
   const supabase = createClient()
 
+  async function adminAction(table: string, id: string, data: Record<string, any>) {
+    const { data: { session } } = await supabase.auth.getSession()
+    const token = session?.access_token
+    if (!token) return false
+
+    const res = await fetch("/api/admin", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
+      },
+      body: JSON.stringify({ action: "update", table, id, data }),
+    })
+    return res.ok
+  }
+
   useEffect(() => {
     async function load() {
       const { data: { user } } = await supabase.auth.getUser()
@@ -120,17 +136,25 @@ export default function AdminPage() {
   }, [])
 
   async function verifierMoniteur(id: string, verifie: boolean) {
-    await supabase.from("moniteurs").update({ verifie }).eq("id", id)
-    setMoniteurs(prev => prev.map(m => m.id === id ? { ...m, verifie } : m))
-    setActionMsg(verifie ? "✓ Moniteur vérifié" : "✗ Vérification retirée")
-    setTimeout(() => setActionMsg(""), 3000)
+    const ok = await adminAction("moniteurs", id, { verifie })
+    if (ok) {
+      setMoniteurs(prev => prev.map(m => m.id === id ? { ...m, verifie } : m))
+      setActionMsg(verifie ? "✓ Moniteur vérifié" : "✗ Vérification retirée")
+    } else {
+      setActionMsg("❌ Erreur — vérifiez SUPABASE_SERVICE_KEY")
+    }
+    setTimeout(() => setActionMsg(""), 4000)
   }
 
   async function updateReservationStatut(id: string, statut: string) {
-    await supabase.from("reservations").update({ statut }).eq("id", id)
-    setReservations(prev => prev.map(r => r.id === id ? { ...r, statut } : r))
-    setActionMsg("Statut mis à jour")
-    setTimeout(() => setActionMsg(""), 3000)
+    const ok = await adminAction("reservations", id, { statut })
+    if (ok) {
+      setReservations(prev => prev.map(r => r.id === id ? { ...r, statut } : r))
+      setActionMsg("✓ Statut mis à jour")
+    } else {
+      setActionMsg("❌ Erreur — vérifiez SUPABASE_SERVICE_KEY")
+    }
+    setTimeout(() => setActionMsg(""), 4000)
   }
 
   if (loading) return (

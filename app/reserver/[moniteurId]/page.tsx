@@ -97,7 +97,7 @@ export default function ReservationPage() {
     const [h, m] = heureFromCreneau(selectedCreneau).split(":")
     dateHeure.setHours(parseInt(h), parseInt(m), 0, 0)
 
-    const { error: resError } = await supabase.from("réservations").insert({
+    const { error: resError } = await supabase.from("reservations").insert({
       eleve_id: eleve.id,
       moniteur_id: moniteur.id,
       date_heure: dateHeure.toISOString(),
@@ -113,6 +113,49 @@ export default function ReservationPage() {
       setSubmitting(false)
       return
     }
+
+    // Récupérer les emails pour les notifications
+    const { data: userData } = await supabase.auth.getUser()
+    const emailEleve = userData?.user?.email || ""
+
+    const { data: moniteurProfile } = await supabase
+      .from("profiles").select("id")
+      .eq("id", moniteur.profiles ? (moniteur as any).user_id : "")
+      .single()
+
+    const { data: moniteurUser } = await supabase.auth.admin?.getUserById?.((moniteur as any).user_id)
+    const emailMoniteur = (moniteurUser as any)?.data?.user?.email || ""
+
+    // Envoyer emails en parallèle
+    const emailData = {
+      prenomEleve: eleve.profiles?.prenom || "",
+      nomEleve: eleve.profiles?.nom || "",
+      prenomMoniteur: moniteur.profiles?.prenom || "",
+      nomMoniteur: moniteur.profiles?.nom || "",
+      dateHeure: dateHeure.toISOString(),
+      zone: moniteur.zone,
+      montant: moniteur.tarif_horaire,
+      adresseRdv: adresseRdv || undefined,
+    }
+
+    await Promise.allSettled([
+      fetch("/api/emails", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          type: "reservation_eleve",
+          data: { ...emailData, emailEleve },
+        }),
+      }),
+      emailMoniteur && fetch("/api/emails", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          type: "nouvelle_demande_moniteur",
+          data: { ...emailData, emailMoniteur },
+        }),
+      }),
+    ])
 
     setSubmitting(false)
     setStep("succes")

@@ -216,15 +216,33 @@ export default function DashboardMoniteur() {
                           <div className="flex gap-2">
                             <button
                               onClick={async () => {
-                                await supabase.from("réservations").update({ statut: "confirme" }).eq("id", r.id)
+                                await supabase.from("reservations").update({ statut: "confirme" }).eq("id", r.id)
                                 setReservations(prev => prev.map(res => res.id === r.id ? { ...res, statut: "confirme" } : res))
+                                // Email de confirmation à l'élève
+                                const { data: userData } = await supabase.auth.getUser()
+                                fetch("/api/emails", {
+                                  method: "POST",
+                                  headers: { "Content-Type": "application/json" },
+                                  body: JSON.stringify({
+                                    type: "lecon_confirmee",
+                                    data: {
+                                      emailEleve: "",
+                                      prenomEleve: r.eleves?.profiles?.prenom || "",
+                                      prenomMoniteur: profile?.prenom || "",
+                                      nomMoniteur: profile?.nom || "",
+                                      dateHeure: r.date_heure,
+                                      montant: r.montant,
+                                      zone: moniteur?.zone || "",
+                                    }
+                                  })
+                                })
                               }}
                               className="px-3 py-1.5 rounded-lg text-xs font-bold bg-gradient-to-r from-[#00F5A0] to-[#00D4FF] text-background hover:opacity-90 active:scale-95 transition-all">
                               ✓ Confirmer
                             </button>
                             <button
                               onClick={async () => {
-                                await supabase.from("réservations").update({ statut: "refuse" }).eq("id", r.id)
+                                await supabase.from("reservations").update({ statut: "refuse" }).eq("id", r.id)
                                 setReservations(prev => prev.map(res => res.id === r.id ? { ...res, statut: "refuse" } : res))
                               }}
                               className="px-3 py-1.5 rounded-lg text-xs font-semibold border border-red-500/30 text-red-400 hover:bg-red-500/10 active:scale-95 transition-all">

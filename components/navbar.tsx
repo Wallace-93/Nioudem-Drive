@@ -84,9 +84,9 @@ export function Navbar({ backLink }: { backLink?: { href: string; label: string 
                 className="text-muted-foreground text-sm font-medium hover:text-primary transition-colors">
                 Se connecter
               </Link>
-              <Link href="/inscription"
+              <Link href={user ? "/dashboard" : "/inscription"}
                 className="px-5 py-2 rounded-lg text-sm font-semibold bg-gradient-to-r from-[#00F5A0] to-[#00D4FF] text-background hover:opacity-90 active:scale-95 transition-all">
-                Commencer
+                {user ? "Mon espace →" : "Commencer"}
               </Link>
             </div>
           )

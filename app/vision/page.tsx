@@ -10,16 +10,28 @@ export default function Vision() {
   return (
     <div className="font-sans text-foreground overflow-x-hidden min-h-screen">
       {/* NAV */}
-      <nav className="fixed top-0 w-full z-50 px-4 md:px-8 py-4 flex items-center justify-between bg-background/85 backdrop-blur-md border-b border-border">
-        <Link href="/" className="text-xl font-extrabold tracking-tight">
-          <span className="bg-gradient-to-r from-[#00F5A0] to-[#00D4FF] bg-clip-text text-transparent">NiouDem</span>
-          <span className="font-light text-foreground"> Drive</span>
+      <nav className="fixed top-0 w-full z-50 px-4 md:px-8 py-3 flex items-center justify-between bg-background/85 backdrop-blur-md border-b border-border">
+        <Link href="/" className="flex flex-col">
+          <span className="text-xl font-extrabold tracking-tight">
+            <span className="bg-gradient-to-r from-[#00F5A0] to-[#00D4FF] bg-clip-text text-transparent">NiouDem</span>
+            <span className="font-light text-foreground"> Drive</span>
+          </span>
+          <span className="text-[10px] font-black tracking-[0.15em] uppercase"
+            style={{
+              background: "linear-gradient(135deg, #00F5A0, #00D4FF)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              filter: "drop-shadow(0 0 4px rgba(0,245,160,0.7))",
+              animation: "laserPulse 2s ease-in-out infinite"
+            }}>
+            auto-école 2.0
+          </span>
         </Link>
         <div className="hidden md:flex items-center gap-8">
-          <Link href="/vision" className="text-primary text-sm font-semibold transition-colors">Notre vision</Link>
+          <Link href="/vision" className="text-primary text-sm font-semibold">Notre vision</Link>
           <Link href="/#comment" className="text-muted-foreground text-sm font-medium hover:text-primary transition-colors">Comment ça marche</Link>
-          <Link href="/#features" className="text-muted-foreground text-sm font-medium hover:text-primary transition-colors">Fonctionnalités</Link>
-          <Link href="/inscription" className="px-5 py-2 rounded-lg text-sm font-semibold bg-gradient-to-r from-[#00F5A0] to-[#00D4FF] text-background hover:opacity-90 transition-opacity">
+          <Link href="/resultats" className="text-muted-foreground text-sm font-medium hover:text-primary transition-colors">Moniteurs</Link>
+          <Link href="/inscription" className="px-5 py-2 rounded-lg text-sm font-semibold bg-gradient-to-r from-[#00F5A0] to-[#00D4FF] text-background hover:opacity-90 active:scale-95 transition-all">
             Commencer
           </Link>
         </div>

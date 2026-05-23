@@ -119,31 +119,44 @@ export default function Resultats() {
 
   useEffect(() => {
     async function fetchMoniteurs() {
-      const { data, error } = await supabase
-        .from("moniteurs")
-        .select(`
-          *,
-          profiles (prenom, nom, avatar_url)
-        `)
-        .eq("verifie", true)
-        .order("note_moyenne", { ascending: false })
+      try {
+        const { data, error } = await supabase
+          .from("moniteurs")
+          .select(`
+            *,
+            profiles (prenom, nom, avatar_url)
+          `)
+          .eq("verifie", true)
+          .order("note_moyenne", { ascending: false })
 
-      if (error || !data || data.length === 0) {
-        // Pas de moniteurs réels → mode démo
+        if (error || !data || data.length === 0) {
+          setMoniteurs(MONITEURS_DEMO)
+          setIsDemoMode(true)
+        } else {
+          const avec_score = data.map((m: any, i: number) => ({
+            ...m,
+            score: Math.max(60, 97 - i * 5),
+          }))
+          setMoniteurs(avec_score)
+          setIsDemoMode(false)
+        }
+      } catch (e) {
         setMoniteurs(MONITEURS_DEMO)
         setIsDemoMode(true)
-      } else {
-        // Calcul du score pour chaque moniteur réel
-        const avec_score = data.map((m: any, i: number) => ({
-          ...m,
-          score: Math.max(60, 97 - i * 5),
-        }))
-        setMoniteurs(avec_score)
-        setIsDemoMode(false)
+      } finally {
+        setLoading(false)
       }
-      setLoading(false)
     }
-    fetchMoniteurs()
+
+    // Timeout de sécurité — si pas de réponse en 8s, afficher les démos
+    const timeout = setTimeout(() => {
+      setMoniteurs(MONITEURS_DEMO)
+      setIsDemoMode(true)
+      setLoading(false)
+    }, 8000)
+
+    fetchMoniteurs().then(() => clearTimeout(timeout))
+    return () => clearTimeout(timeout)
   }, [])
 
   const sorted = [...moniteurs]

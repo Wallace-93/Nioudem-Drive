@@ -34,7 +34,7 @@ export function Navbar({ backLink }: { backLink?: { href: string; label: string 
 
   return (
     <nav className="fixed top-0 w-full z-50 px-4 md:px-8 py-3 flex items-center justify-between bg-background/85 backdrop-blur-md border-b border-border">
-      <Link href="/" className="flex flex-col">
+      <Link href="/" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="flex flex-col">
         <span className="text-xl font-extrabold tracking-tight">
           <span className="bg-gradient-to-r from-[#00F5A0] to-[#00D4FF] bg-clip-text text-transparent">NiouDem</span>
           <span className="font-light text-foreground"> Drive</span>

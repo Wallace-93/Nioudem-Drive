@@ -271,3 +271,101 @@ export function emailRappelLecon({
     </html>
   `
 }
+
+// Email 5 — Notification admin : nouveau moniteur inscrit
+export function emailNouveauMoniteurAdmin({
+  prenomMoniteur,
+  nomMoniteur,
+  diplome,
+  zone,
+  telephone,
+  adminUrl,
+}: {
+  prenomMoniteur: string
+  nomMoniteur: string
+  diplome: string
+  zone: string
+  telephone: string
+  adminUrl: string
+}) {
+  return `
+    <!DOCTYPE html>
+    <html lang="fr">
+    <head><meta charset="UTF-8"><title>Nouveau moniteur à vérifier</title></head>
+    <body style="${baseStyle}">
+      <div style="${containerStyle}">
+        ${header()}
+        <div style="background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.3); border-radius: 16px; padding: 24px; margin-bottom: 24px;">
+          <h1 style="color: #C9A84C; font-size: 20px; font-weight: 800; margin: 0 0 4px;">⏳ Nouveau moniteur à vérifier</h1>
+          <p style="${mutedStyle}">Un enseignant vient de s'inscrire sur NiouDem Drive.</p>
+        </div>
+        <div style="${cardStyle}">
+          ${row("Nom", `${prenomMoniteur} ${nomMoniteur}`)}
+          ${row("Diplôme", diplome)}
+          ${row("Zone", zone)}
+          ${row("Téléphone", telephone)}
+        </div>
+        <p style="${mutedStyle}">Connectez-vous au back-office pour vérifier son diplôme et activer son profil.</p>
+        <div style="text-align: center;">
+          <a href="${adminUrl}" style="${btnStyle}">Accéder au back-office →</a>
+        </div>
+        ${footer()}
+      </div>
+    </body>
+    </html>
+  `
+}
+
+// Email 6 — Rappel 24h avant la leçon
+export function emailRappel24h({
+  prenomEleve,
+  prenomMoniteur,
+  nomMoniteur,
+  dateHeure,
+  adresseRdv,
+  zone,
+}: {
+  prenomEleve: string
+  prenomMoniteur: string
+  nomMoniteur: string
+  dateHeure: string
+  adresseRdv?: string
+  zone: string
+}) {
+  const date = new Date(dateHeure)
+  const heureFormatted = date.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })
+  const dateFormatted = date.toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long" })
+
+  return `
+    <!DOCTYPE html>
+    <html lang="fr">
+    <head><meta charset="UTF-8"><title>Rappel : votre leçon demain !</title></head>
+    <body style="${baseStyle}">
+      <div style="${containerStyle}">
+        ${header()}
+        <h1 style="${headingStyle}">Votre leçon, c'est demain ! 🚗</h1>
+        <p style="${mutedStyle}">Bonjour ${prenomEleve}, petit rappel : vous avez une leçon demain avec <strong style="color: #F1F5F9;">${prenomMoniteur} ${nomMoniteur}</strong>.</p>
+        <div style="${cardStyle}">
+          ${row("Date", dateFormatted)}
+          ${row("Heure", heureFormatted)}
+          ${row("Lieu de RDV", adresseRdv || zone)}
+          ${row("Moniteur", `${prenomMoniteur} ${nomMoniteur}`)}
+        </div>
+        <div style="background: rgba(0,245,160,0.08); border: 1px solid rgba(0,245,160,0.2); border-radius: 12px; padding: 20px; margin: 16px 0;">
+          <p style="color: #00F5A0; font-size: 14px; font-weight: 600; margin: 0 0 12px;">💡 Conseils pour demain</p>
+          <ul style="color: #94A3B8; font-size: 13px; margin: 0; padding-left: 20px; line-height: 1.8;">
+            <li>Arrivez 5 minutes en avance au point de RDV</li>
+            <li>Munissez-vous de votre pièce d'identité</li>
+            <li>Reposez-vous bien ce soir</li>
+            <li>Visualisez mentalement votre trajet</li>
+          </ul>
+        </div>
+        <div style="text-align: center;">
+          <a href="https://nioudem-drive.onrender.com/dashboard/eleve" style="${btnStyle}">Voir les détails →</a>
+        </div>
+        ${footer()}
+      </div>
+    </body>
+    </html>
+  `
+}

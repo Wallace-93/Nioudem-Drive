@@ -363,4 +363,3 @@ export default function AdminPage() {
     </div>
   )
 }
-const ADMIN_EMAILS = ["wallygackou@gmail.com"]

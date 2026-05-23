@@ -40,6 +40,8 @@ export default function ProfilEdition() {
   const [moniteur, setMoniteur] = useState<Moniteur | null>(null)
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
+  const [uploadingPhoto, setUploadingPhoto] = useState(false)
+  const [photoError, setPhotoError] = useState("")
   const [saveMsg, setSaveMsg] = useState("")
   const [saveError, setSaveError] = useState("")
   const [activeTab, setActiveTab] = useState<"infos" | "specialites" | "apercu">("infos")
@@ -61,6 +63,37 @@ export default function ProfilEdition() {
     }
     load()
   }, [])
+
+  async function handlePhotoUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (!file) return
+    if (file.size > 2 * 1024 * 1024) { setPhotoError("Fichier trop lourd — max 2 MB"); return }
+    setUploadingPhoto(true)
+    setPhotoError("")
+
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) return
+
+    // Upload dans Supabase Storage
+    const ext = file.name.split(".").pop()
+    const path = `avatars/${user.id}.${ext}`
+    const { error: uploadError } = await supabase.storage
+      .from("avatars")
+      .upload(path, file, { upsert: true })
+
+    if (uploadError) {
+      setPhotoError("Erreur upload : " + uploadError.message)
+      setUploadingPhoto(false)
+      return
+    }
+
+    const { data: urlData } = supabase.storage.from("avatars").getPublicUrl(path)
+    const avatarUrl = urlData.publicUrl
+
+    await supabase.from("profiles").update({ avatar_url: avatarUrl }).eq("id", user.id)
+    setProfile(prev => prev ? { ...prev, avatar_url: avatarUrl } : prev)
+    setUploadingPhoto(false)
+  }
 
   async function handleSave() {
     if (!moniteur || !profile) return
@@ -195,14 +228,34 @@ export default function ProfilEdition() {
             <div className="bg-card border border-border rounded-2xl p-6">
               <h2 className="text-sm font-bold mb-4">Photo de profil</h2>
               <div className="flex items-center gap-5">
-                <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-[#00F5A0] to-[#00D4FF] flex items-center justify-center text-background font-black text-2xl flex-shrink-0">
-                  {profile.prenom?.[0]}{profile.nom?.[0]}
+                <div className="relative">
+                  {profile.avatar_url ? (
+                    <img src={profile.avatar_url} alt="Photo de profil"
+                      className="w-20 h-20 rounded-2xl object-cover" />
+                  ) : (
+                    <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-[#00F5A0] to-[#00D4FF] flex items-center justify-center text-background font-black text-2xl flex-shrink-0">
+                      {profile.prenom?.[0]}{profile.nom?.[0]}
+                    </div>
+                  )}
+                  {uploadingPhoto && (
+                    <div className="absolute inset-0 rounded-2xl bg-background/70 flex items-center justify-center">
+                      <svg className="w-6 h-6 animate-spin text-primary" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
+                      </svg>
+                    </div>
+                  )}
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground mb-2">La photo de profil sera disponible prochainement. Pour l'instant, vos initiales s'affichent.</p>
-                  <div className="text-xs text-muted-foreground bg-background/50 rounded-lg px-3 py-2 border border-border inline-block">
-                    Fonctionnalité à venir — Upload photo
-                  </div>
+                  <label htmlFor="photo-upload" className="cursor-pointer">
+                    <div className="px-4 py-2.5 rounded-xl text-sm font-semibold border border-border hover:border-primary hover:text-primary active:scale-95 transition-all inline-block">
+                      📷 {profile.avatar_url ? "Changer la photo" : "Ajouter une photo"}
+                    </div>
+                    <input id="photo-upload" type="file" accept="image/jpeg,image/png,image/webp"
+                      className="hidden" onChange={handlePhotoUpload} />
+                  </label>
+                  <p className="text-xs text-muted-foreground mt-2">JPG, PNG ou WebP · Max 2 MB</p>
+                  {photoError && <p className="text-xs text-red-400 mt-1">{photoError}</p>}
                 </div>
               </div>
             </div>

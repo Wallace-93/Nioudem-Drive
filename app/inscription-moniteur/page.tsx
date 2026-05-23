@@ -272,6 +272,24 @@ export default function InscriptionMoniteurPage() {
       return
     }
 
+    // Notifier l'admin
+    fetch("/api/emails", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        type: "nouveau_moniteur_admin",
+        data: {
+          emailAdmin: "nioudem.contact@gmail.com",
+          prenomMoniteur: formData.prenom,
+          nomMoniteur: formData.nom,
+          diplome: formData.diplome,
+          zone: formData.ville,
+          telephone: formData.telephone,
+          adminUrl: "https://nioudem-drive.onrender.com/admin",
+        }
+      })
+    })
+
     setLoading(false)
     setSuccess(true)
   }

@@ -5,6 +5,8 @@ import {
   emailNouvelleDemandeMoniteur,
   emailLeconConfirmee,
   emailRappelLecon,
+  emailNouveauMoniteurAdmin,
+  emailRappel24h,
 } from "@/lib/email-templates"
 
 const FROM = "NiouDem Drive <onboarding@resend.dev>"
@@ -55,6 +57,24 @@ export async function POST(req: NextRequest) {
           to: data.emailEleve,
           subject: `🚗 Rappel : votre leçon demain !`,
           html: emailRappelLecon(data),
+        })
+        break
+
+      case "nouveau_moniteur_admin":
+        result = await resend.emails.send({
+          from: FROM,
+          to: data.emailAdmin,
+          subject: `⏳ Nouveau moniteur à vérifier : ${data.prenomMoniteur} ${data.nomMoniteur}`,
+          html: emailNouveauMoniteurAdmin(data),
+        })
+        break
+
+      case "rappel_24h":
+        result = await resend.emails.send({
+          from: FROM,
+          to: data.emailEleve,
+          subject: `🚗 Rappel : votre leçon demain avec ${data.prenomMoniteur} ${data.nomMoniteur}`,
+          html: emailRappel24h(data),
         })
         break
 

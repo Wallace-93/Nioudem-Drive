@@ -388,9 +388,15 @@ export default function DashboardEleve() {
                           <div className="text-xs text-muted-foreground">{new Date(r.date_heure).toLocaleDateString("fr-FR", { weekday: "short", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}</div>
                         </div>
                       </div>
-                      <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-3 flex-wrap justify-end">
                         <span className={`text-xs font-semibold px-2 py-1 rounded-full border ${colors[r.statut]}`}>{labels[r.statut]}</span>
                         <span className="text-sm font-bold">{r.montant}€</span>
+                        {r.statut === "termine" && (
+                          <Link href={`/avis?reservation=${r.id}`}
+                            className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-[#C9A84C]/10 text-[#C9A84C] border border-[#C9A84C]/30 hover:bg-[#C9A84C]/20 active:scale-95 transition-all">
+                            ★ Laisser un avis
+                          </Link>
+                        )}
                       </div>
                     </div>
                   )

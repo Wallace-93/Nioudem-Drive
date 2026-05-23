@@ -212,6 +212,16 @@ export default function DashboardMoniteur() {
                       <div className="flex items-center gap-2 flex-wrap justify-end">
                         <span className={`text-xs font-semibold px-2 py-1 rounded-full border ${colors[r.statut]}`}>{labels[r.statut]}</span>
                         <span className="text-sm font-bold">{r.montant}€</span>
+                        {r.statut === "confirme" && new Date(r.date_heure) < new Date() && (
+                          <button
+                            onClick={async () => {
+                              await supabase.from("reservations").update({ statut: "termine" }).eq("id", r.id)
+                              setReservations(prev => prev.map(res => res.id === r.id ? { ...res, statut: "termine" } : res))
+                            }}
+                            className="px-3 py-1.5 rounded-lg text-xs font-bold bg-[#00D4FF]/10 text-[#00D4FF] border border-[#00D4FF]/30 hover:bg-[#00D4FF]/20 active:scale-95 transition-all">
+                            ✓ Marquer terminée
+                          </button>
+                        )}
                         {r.statut === "en_attente" && (
                           <div className="flex gap-2">
                             <button

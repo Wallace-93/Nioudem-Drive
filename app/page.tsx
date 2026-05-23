@@ -63,8 +63,8 @@ export default function Home() {
               La plateforme des moniteurs indépendants
             </div>
 
-            <div className="relative inline-block pt-4">
-              <h1 className="text-4xl md:text-6xl lg:text-7xl font-black leading-tight tracking-tight mb-6 text-balance origin-top animate-swing relative">
+            <div className="relative inline-block">
+              <h1 className="text-4xl md:text-6xl lg:text-7xl font-black leading-tight tracking-tight mb-6 text-balance animate-swing">
                 Trouvez le{" "}
                 <span className="bg-gradient-to-r from-[#00F5A0] to-[#00D4FF] bg-clip-text text-transparent">moniteur</span>
                 <br />fait pour vous.

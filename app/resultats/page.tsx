@@ -34,51 +34,57 @@ type SortKey = "score" | "note" | "tarif" | "dispo"
 const MONITEURS_DEMO: Moniteur[] = [
   {
     id: "demo-1", user_id: "d1", diplome: "BEPECASER",
-    specialites: ["Élèves anxieux", "Autoroute", "Boîte auto"],
+    specialites: ["Élèves anxieux", "Autoroute", "Boîte automatique", "Préparation examen"],
     tarif_horaire: 58, zone: "Paris 15e", rayon_km: 15,
-    boite_auto: true, bio: "Monitrice indépendante depuis 8 ans.",
+    boite_auto: true,
+    bio: "Monitrice indépendante depuis 9 ans, titulaire du BEPECASER. Spécialisée dans l'accompagnement des élèves anxieux, je crée un cadre bienveillant où chacun progresse à son rythme. Ancienne monitrice en auto-école, j'ai choisi l'indépendance pour offrir un suivi vraiment personnalisé.",
     verifie: true, note_moyenne: 4.9, nb_avis: 214,
-    profiles: { prenom: "Sophie", nom: "Martin", avatar_url: null }, score: 97,
+    profiles: { prenom: "Isabelle", nom: "Fontaine", avatar_url: null }, score: 97,
   },
   {
     id: "demo-2", user_id: "d2", diplome: "Titre Pro ECSR",
-    specialites: ["Conduite accompagnée", "Préparation examen"],
-    tarif_horaire: 52, zone: "Paris 14e", rayon_km: 15,
-    boite_auto: false, bio: "5 ans d'expérience, taux de réussite élevé.",
-    verifie: true, note_moyenne: 4.8, nb_avis: 127,
-    profiles: { prenom: "Karim", nom: "Djellal", avatar_url: null }, score: 91,
+    specialites: ["Conduite accompagnée", "Préparation examen", "Conduite en ville"],
+    tarif_horaire: 52, zone: "Paris 11e", rayon_km: 15,
+    boite_auto: false,
+    bio: "Enseignant de la conduite depuis 6 ans, Titre Pro ECSR. Passionné de pédagogie, j'adapte chaque leçon au profil de l'élève. Mon taux de réussite à l'examen dépasse 85%. Disponible en semaine et le samedi matin.",
+    verifie: true, note_moyenne: 4.8, nb_avis: 142,
+    profiles: { prenom: "Mehdi", nom: "Benali", avatar_url: null }, score: 92,
   },
   {
     id: "demo-3", user_id: "d3", diplome: "BEPECASER",
-    specialites: ["Seniors", "Conduite de nuit", "Boîte auto"],
-    tarif_horaire: 55, zone: "Paris 13e", rayon_km: 15,
-    boite_auto: true, bio: "Spécialisée seniors et reprises.",
-    verifie: true, note_moyenne: 4.7, nb_avis: 89,
-    profiles: { prenom: "Laura", nom: "Benoit", avatar_url: null }, score: 88,
+    specialites: ["Seniors", "Reprise après interruption", "Boîte automatique", "Conduite de nuit"],
+    tarif_horaire: 55, zone: "Paris 12e", rayon_km: 20,
+    boite_auto: true,
+    bio: "12 ans d'expérience, spécialisée dans l'accompagnement des seniors et des personnes reprenant la route après une longue interruption. Pédagogie douce et progressive. Véhicule adapté avec double commandes boîte automatique.",
+    verifie: true, note_moyenne: 4.8, nb_avis: 97,
+    profiles: { prenom: "Nathalie", nom: "Rousseau", avatar_url: null }, score: 89,
   },
   {
     id: "demo-4", user_id: "d4", diplome: "Titre Pro ECSR",
-    specialites: ["Préparation examen", "Autoroute"],
-    tarif_horaire: 45, zone: "Paris 6e", rayon_km: 10,
-    boite_auto: false, bio: "Jeune moniteur dynamique.",
-    verifie: true, note_moyenne: 4.6, nb_avis: 63,
-    profiles: { prenom: "Thomas", nom: "Roux", avatar_url: null }, score: 84,
+    specialites: ["Préparation examen", "Autoroute", "Conduite rapide perfectionnement"],
+    tarif_horaire: 47, zone: "Vincennes", rayon_km: 15,
+    boite_auto: false,
+    bio: "Moniteur depuis 4 ans, basé à Vincennes. Passionné de sécurité routière, j'aide mes élèves à développer des réflexes solides et une conduite sereine. Forfaits préparation examen disponibles.",
+    verifie: true, note_moyenne: 4.7, nb_avis: 68,
+    profiles: { prenom: "Julien", nom: "Marchand", avatar_url: null }, score: 85,
   },
   {
     id: "demo-5", user_id: "d5", diplome: "BEPECASER",
-    specialites: ["Élèves anxieux", "Conduite accompagnée"],
-    tarif_horaire: 50, zone: "Paris 7e", rayon_km: 15,
-    boite_auto: true, bio: "Pédagogie bienveillante.",
-    verifie: true, note_moyenne: 4.5, nb_avis: 41,
-    profiles: { prenom: "Amina", nom: "Ndiaye", avatar_url: null }, score: 79,
+    specialites: ["Élèves anxieux", "Conduite accompagnée", "Premiers secours"],
+    tarif_horaire: 50, zone: "Neuilly-sur-Seine", rayon_km: 12,
+    boite_auto: true,
+    bio: "Monitrice certifiée PSC1, j'intègre la gestion du stress dans chaque leçon. Ancienne psychomotricienne reconvertie, j'aide les élèves les plus anxieux à trouver confiance au volant. Disponible en soirée et le week-end.",
+    verifie: true, note_moyenne: 4.9, nb_avis: 53,
+    profiles: { prenom: "Aïcha", nom: "Diallo", avatar_url: null }, score: 81,
   },
   {
     id: "demo-6", user_id: "d6", diplome: "Titre Pro ECSR",
-    specialites: ["Conduite en ville", "Préparation examen"],
-    tarif_horaire: 42, zone: "Paris 16e", rayon_km: 10,
-    boite_auto: false, bio: "Spécialiste conduite urbaine.",
-    verifie: true, note_moyenne: 4.4, nb_avis: 28,
-    profiles: { prenom: "Pierre", nom: "Vasseur", avatar_url: null }, score: 74,
+    specialites: ["Conduite en ville", "Préparation examen", "Jeunes conducteurs"],
+    tarif_horaire: 44, zone: "Montreuil", rayon_km: 15,
+    boite_auto: false,
+    bio: "Moniteur jeune et dynamique depuis 3 ans, spécialisé dans l'accompagnement des 17-25 ans. Ambiance détendue, pédagogie claire. Je couvre l'est parisien : Montreuil, Vincennes, Saint-Mandé, Fontenay.",
+    verifie: true, note_moyenne: 4.6, nb_avis: 34,
+    profiles: { prenom: "Romain", nom: "Girard", avatar_url: null }, score: 76,
   },
 ]
 
@@ -189,7 +195,7 @@ export default function Resultats() {
           </h1>
           {isDemoMode && (
             <p className="text-xs text-[#C9A84C] mt-1 border border-[#C9A84C]/30 bg-[#C9A84C]/10 rounded-lg px-3 py-1.5 inline-block mt-2">
-              ✨ Aperçu — Les vrais moniteurs apparaîtront ici dès leur inscription sur la plateforme
+✨ Profils de présentation — Les moniteurs inscrits apparaîtront ici
             </p>
           )}
         </div>
@@ -304,14 +310,28 @@ export default function Resultats() {
                     <div className="text-[10px] text-muted-foreground">/ leçon 45 min</div>
                   </div>
                   <div className="flex md:flex-col gap-2 w-full md:w-auto">
-                    <Link href={`/moniteur/${m.id}`}
-                      className="px-4 py-2 rounded-xl text-sm font-semibold border border-border hover:border-primary hover:text-primary active:scale-95 transition-all text-center whitespace-nowrap">
-                      Voir profil
-                    </Link>
-                    <Link href={`/reserver/${m.id}`}
-                      className="px-4 py-2 rounded-xl text-sm font-bold bg-gradient-to-r from-[#00F5A0] to-[#00D4FF] text-background hover:opacity-90 active:scale-95 transition-all text-center whitespace-nowrap">
-                      Réserver
-                    </Link>
+                    {!m.id.startsWith("demo") ? (
+                      <Link href={`/moniteur/${m.id}`}
+                        className="px-4 py-2 rounded-xl text-sm font-semibold border border-border hover:border-primary hover:text-primary active:scale-95 transition-all text-center whitespace-nowrap">
+                        Voir profil
+                      </Link>
+                    ) : (
+                      <div className="px-4 py-2 rounded-xl text-sm font-semibold border border-border text-muted-foreground text-center whitespace-nowrap cursor-default">
+                        Voir profil
+                      </div>
+                    )}
+                    {!m.id.startsWith("demo") ? (
+                      <Link href={`/reserver/${m.id}`}
+                        className="px-4 py-2 rounded-xl text-sm font-bold bg-gradient-to-r from-[#00F5A0] to-[#00D4FF] text-background hover:opacity-90 active:scale-95 transition-all text-center whitespace-nowrap">
+                        Réserver
+                      </Link>
+                    ) : (
+                      <Link href="/inscription"
+                        className="px-4 py-2 rounded-xl text-sm font-bold bg-gradient-to-r from-[#00F5A0]/60 to-[#00D4FF]/60 text-background active:scale-95 transition-all text-center whitespace-nowrap"
+                        title="Inscrivez-vous pour accéder aux vrais moniteurs">
+                        S'inscrire →
+                      </Link>
+                    )}
                   </div>
                 </div>
               </div>

@@ -1,3 +1,17 @@
+
+@keyframes pendulum {
+  0%   { transform: rotate(-3deg); }
+  50%  { transform: rotate(3deg); }
+  100% { transform: rotate(-3deg); }
+}
+
+.animate-swing {
+  animation: pendulum 2.5s ease-in-out infinite;
+  will-change: transform;
+  display: inline-block;
+  transform-origin: top center;
+}
+
 @import 'tailwindcss';
 
 @custom-variant dark (&:is(.dark *));
@@ -59,43 +73,6 @@
   body {
     @apply bg-background text-foreground;
   }
-}
-
-@keyframes pendulum {
-  0%   { transform: rotate(-4deg) translateY(0); }
-  50%  { transform: rotate(4deg) translateY(-2px); }
-  100% { transform: rotate(-4deg) translateY(0); }
-}
-
-.animate-swing {
-  animation: pendulum 2.5s ease-in-out infinite;
-  will-change: transform;
-  position: relative;
-}
-
-.animate-swing::before {
-  content: '';
-  position: absolute;
-  top: -60px;
-  left: 50%;
-  width: 2px;
-  height: 60px;
-  background: linear-gradient(to bottom, rgba(0,245,160,0.6), rgba(0,212,255,0.3), transparent);
-  transform-origin: top center;
-  animation: pendulum 2.5s ease-in-out infinite;
-}
-
-.animate-swing::after {
-  content: '';
-  position: absolute;
-  top: -64px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #00F5A0, #00D4FF);
-  box-shadow: 0 0 12px rgba(0,245,160,0.5);
 }
 
 input[type="range"]::-webkit-slider-thumb {

@@ -20,7 +20,7 @@ export default function DashboardMoniteur() {
   const [reservations, setReservations] = useState<Reservation[]>([])
   const [disponibilites, setDisponibilites] = useState<Record<string, boolean>>({})
   const [loading, setLoading] = useState(true)
-  const [activeTab, setActiveTab] = useState<"overview" | "réservations" | "dispos" | "profil">("overview")
+  const [activeTab, setActiveTab] = useState<"overview" | "reservations" | "dispos" | "profil">("overview")
   const [saving, setSaving] = useState(false)
   const [saveMsg, setSaveMsg] = useState("")
   const router = useRouter()
@@ -119,7 +119,7 @@ export default function DashboardMoniteur() {
         </div>
 
         <div className="flex gap-1 bg-card border border-border rounded-xl p-1 mb-8 w-fit overflow-x-auto">
-          {([["overview", "📊 Vue d'ensemble"], ["réservations", "📅 Réservations"], ["dispos", "🗓 Disponibilités"], ["profil", "✏️ Mon profil"]] as const).map(([tab, label]) => (
+          {([["overview", "📊 Vue d'ensemble"], ["reservations", "📅 Réservations"], ["dispos", "🗓 Disponibilités"], ["profil", "✏️ Mon profil"]] as const).map(([tab, label]) => (
             <button key={tab} onClick={() => setActiveTab(tab)}
               className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all active:scale-95 whitespace-nowrap ${activeTab === tab ? "bg-gradient-to-r from-[#00F5A0] to-[#00D4FF] text-background" : "text-muted-foreground hover:text-foreground"}`}>{label}</button>
           ))}
@@ -188,7 +188,7 @@ export default function DashboardMoniteur() {
           </div>
         )}
 
-        {activeTab === "réservations" && (
+        {activeTab === "reservations" && (
           <div className="bg-card border border-border rounded-2xl p-6">
             <h2 className="text-base font-bold mb-5">Toutes mes réservations</h2>
             {reservations.length === 0 ? (
@@ -285,47 +285,16 @@ export default function DashboardMoniteur() {
         )}
 
         {activeTab === "profil" && moniteur && (
-          <div className="bg-card border border-border rounded-2xl p-6">
-            <h2 className="text-base font-bold mb-5">Mon profil moniteur</h2>
-            <div className="flex flex-col gap-4">
-              <div>
-                <label className="text-sm font-medium block mb-2">Bio / présentation</label>
-                <textarea value={moniteur.bio || ""} onChange={(e) => setMoniteur({ ...moniteur, bio: e.target.value })} rows={4}
-                  placeholder="Décrivez votre approche pédagogique..."
-                  className="w-full px-4 py-3 rounded-xl bg-background border border-border focus:border-primary focus:outline-none text-sm transition-colors resize-none" />
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="text-sm font-medium block mb-2">Tarif / leçon (€)</label>
-                  <input type="number" min={30} max={150} value={moniteur.tarif_horaire || ""}
-                    onChange={(e) => setMoniteur({ ...moniteur, tarif_horaire: parseInt(e.target.value) })}
-                    className="w-full px-4 py-3 rounded-xl bg-background border border-border focus:border-primary focus:outline-none text-sm transition-colors" />
-                </div>
-                <div>
-                  <label className="text-sm font-medium block mb-2">Zone principale</label>
-                  <input type="text" value={moniteur.zone || ""} onChange={(e) => setMoniteur({ ...moniteur, zone: e.target.value })}
-                    className="w-full px-4 py-3 rounded-xl bg-background border border-border focus:border-primary focus:outline-none text-sm transition-colors" />
-                </div>
-                <div>
-                  <label className="text-sm font-medium block mb-2">Rayon d'intervention (km)</label>
-                  <input type="number" min={5} max={50} value={moniteur.rayon_km || ""}
-                    onChange={(e) => setMoniteur({ ...moniteur, rayon_km: parseInt(e.target.value) })}
-                    className="w-full px-4 py-3 rounded-xl bg-background border border-border focus:border-primary focus:outline-none text-sm transition-colors" />
-                </div>
-                <div>
-                  <label className="text-sm font-medium block mb-2">Diplôme</label>
-                  <input type="text" disabled value={moniteur.diplome || ""}
-                    className="w-full px-4 py-3 rounded-xl bg-background border border-border text-sm text-muted-foreground cursor-not-allowed" />
-                </div>
-              </div>
-              <div className="flex items-center gap-3 pt-2">
-                <button onClick={saveProfil} disabled={saving}
-                  className="px-6 py-3 rounded-xl text-sm font-bold bg-gradient-to-r from-[#00F5A0] to-[#00D4FF] text-background hover:opacity-90 active:scale-95 transition-all disabled:opacity-50">
-                  {saving ? "Sauvegarde..." : "Sauvegarder"}
-                </button>
-                {saveMsg && <span className="text-sm text-[#00F5A0] font-semibold">{saveMsg}</span>}
-              </div>
-            </div>
+          <div className="bg-card border border-border rounded-2xl p-8 text-center">
+            <div className="text-4xl mb-4">✏️</div>
+            <h2 className="text-lg font-bold mb-2">Modifier mon profil</h2>
+            <p className="text-muted-foreground text-sm mb-6 max-w-md mx-auto">
+              Accédez à l'éditeur de profil complet pour modifier votre bio, vos spécialités, votre tarif, votre zone, et prévisualiser votre profil public.
+            </p>
+            <Link href="/profil"
+              className="inline-block px-8 py-3.5 rounded-xl text-sm font-bold bg-gradient-to-r from-[#00F5A0] to-[#00D4FF] text-background hover:opacity-90 active:scale-95 transition-all">
+              Ouvrir l'éditeur de profil →
+            </Link>
           </div>
         )}
       </div>

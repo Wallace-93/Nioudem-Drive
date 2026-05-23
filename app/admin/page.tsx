@@ -8,7 +8,7 @@ import { createClient } from "@/lib/supabase-client"
 import { useRouter } from "next/navigation"
 
 // ⚠️ Remplace par ton email admin
-const ADMIN_EMAILS = ["nioudem.contact@gmail.com"]
+const ADMIN_EMAILS = ["fallies.project@gmail.com"]
 
 type Moniteur = {
   id: string

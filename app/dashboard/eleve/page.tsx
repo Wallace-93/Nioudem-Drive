@@ -52,7 +52,7 @@ export default function DashboardEleve() {
   const [reservations, setReservations] = useState<Reservation[]>([])
   const [avis, setAvis] = useState<Avis[]>([])
   const [loading, setLoading] = useState(true)
-  const [activeTab, setActiveTab] = useState<"overview" | "carnet" | "objectifs" | "réservations">("overview")
+  const [activeTab, setActiveTab] = useState<"overview" | "carnet" | "objectifs" | "reservations">("overview")
   const router = useRouter()
   const supabase = createClient()
 
@@ -69,7 +69,7 @@ export default function DashboardEleve() {
 
       if (elv) {
         const { data: res } = await supabase
-          .from("réservations").select(`*, moniteurs(note_moyenne, tarif_horaire, zone, profiles(prenom, nom))`)
+          .from("reservations").select(`*, moniteurs(note_moyenne, tarif_horaire, zone, profiles(prenom, nom))`)
           .eq("eleve_id", elv.id).order("date_heure", { ascending: false })
         setReservations(res || [])
       }
@@ -135,7 +135,7 @@ export default function DashboardEleve() {
             ["overview", "🏠 Accueil"],
             ["objectifs", "🎯 Objectifs"],
             ["carnet", "📓 Carnet de bord"],
-            ["réservations", "📅 Mes leçons"],
+            ["reservations", "📅 Mes leçons"],
           ] as const).map(([tab, label]) => (
             <button key={tab} onClick={() => setActiveTab(tab)}
               className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all active:scale-95 whitespace-nowrap ${activeTab === tab ? "bg-gradient-to-r from-[#00F5A0] to-[#00D4FF] text-background" : "text-muted-foreground hover:text-foreground"}`}>{label}</button>
@@ -355,7 +355,7 @@ export default function DashboardEleve() {
         )}
 
         {/* RÉSERVATIONS */}
-        {activeTab === "réservations" && (
+        {activeTab === "reservations" && (
           <div className="bg-card border border-border rounded-2xl p-6">
             <div className="flex items-center justify-between mb-5">
               <h2 className="text-base font-bold">Mes leçons</h2>

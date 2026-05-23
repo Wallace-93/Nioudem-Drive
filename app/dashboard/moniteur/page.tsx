@@ -38,13 +38,13 @@ export default function DashboardMoniteur() {
       setMoniteur(mon)
 
       if (mon) {
-        const { data: dispos } = await supabase.from("disponibilités").select("*").eq("moniteur_id", mon.id)
+        const { data: dispos } = await supabase.from("disponibilites").select("*").eq("moniteur_id", mon.id)
         const dispoMap: Record<string, boolean> = {}
         dispos?.forEach((d: any) => { dispoMap[`${d.jour_semaine}-${d.creneau}`] = d.actif })
         setDisponibilites(dispoMap)
 
         const { data: res } = await supabase
-          .from("réservations").select(`*, eleves(profiles(prenom, nom))`)
+          .from("reservations").select(`*, eleves(profiles(prenom, nom))`)
           .eq("moniteur_id", mon.id).order("date_heure", { ascending: true })
         setReservations(res || [])
       }
@@ -63,7 +63,7 @@ export default function DashboardMoniteur() {
     const key = `${jour}-${creneau}`
     const newVal = !disponibilites[key]
     setDisponibilites(prev => ({ ...prev, [key]: newVal }))
-    await supabase.from("disponibilités").upsert({
+    await supabase.from("disponibilites").upsert({
       moniteur_id: moniteur.id, jour_semaine: jour, creneau, actif: newVal,
     }, { onConflict: "moniteur_id,jour_semaine,creneau" })
   }

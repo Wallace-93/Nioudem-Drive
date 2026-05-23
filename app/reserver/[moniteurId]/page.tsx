@@ -79,7 +79,7 @@ export default function ReservationPage() {
       setMoniteur(mon)
 
       const { data: d } = await supabase
-        .from("disponibilités").select("*")
+        .from("disponibilites").select("*")
         .eq("moniteur_id", moniteurId).eq("actif", true)
       setDispos(d || [])
 

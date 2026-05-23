@@ -114,3 +114,35 @@ input[type="range"]::-moz-range-thumb {
   from { width: 0; opacity: 0; }
   to { width: 100%; opacity: 1; }
 }
+
+/* PWA & Mobile safe areas */
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 8px);
+}
+
+.pb-safe {
+  padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px));
+}
+
+@media (min-width: 768px) {
+  .pb-safe {
+    padding-bottom: 0;
+  }
+}
+
+/* Prevent text size adjustment on orientation change */
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* Smooth scrolling on iOS */
+body {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: none;
+}
+
+/* Touch feedback */
+button, a {
+  -webkit-tap-highlight-color: transparent;
+}

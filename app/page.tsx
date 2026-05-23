@@ -1,8 +1,19 @@
 "use client"
 
 import Link from "next/link"
+import { useEffect, useState } from "react"
+import { createClient } from "@/lib/supabase-client"
 
 export default function Home() {
+  const [user, setUser] = useState<any>(null)
+  const supabase = createClient()
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => setUser(data?.user ?? null))
+  }, [])
+
+  const startHref = user ? "/dashboard" : "/inscription"
+  const startLabel = user ? "Mon espace →" : "Commencer"
   return (
     <div className="font-sans text-foreground overflow-x-hidden">
       {/* NAV */}
@@ -32,8 +43,8 @@ export default function Home() {
           <Link href="#comment" className="text-muted-foreground text-sm font-medium hover:text-primary transition-colors">Comment ça marche</Link>
           <Link href="#features" className="text-muted-foreground text-sm font-medium hover:text-primary transition-colors">Fonctionnalités</Link>
           <Link href="#moniteurs" className="text-muted-foreground text-sm font-medium hover:text-primary transition-colors">Moniteurs</Link>
-          <Link href="/inscription" className="px-5 py-2 rounded-lg text-sm font-semibold bg-gradient-to-r from-[#00F5A0] to-[#00D4FF] text-background hover:opacity-90 active:scale-95 transition-all">
-            Commencer
+          <Link href={startHref} className="px-5 py-2 rounded-lg text-sm font-semibold bg-gradient-to-r from-[#00F5A0] to-[#00D4FF] text-background hover:opacity-90 active:scale-95 transition-all">
+            {startLabel}
           </Link>
         </div>
       </nav>
@@ -76,9 +87,9 @@ export default function Home() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/inscription" className="px-8 py-3.5 rounded-xl text-base font-bold bg-gradient-to-r from-[#00F5A0] to-[#00D4FF] text-background hover:shadow-[0_8px_30px_rgba(0,245,160,0.3)] hover:-translate-y-0.5 active:scale-95 transition-all flex items-center justify-center gap-2">
+              <Link href={startHref} className="px-8 py-3.5 rounded-xl text-base font-bold bg-gradient-to-r from-[#00F5A0] to-[#00D4FF] text-background hover:shadow-[0_8px_30px_rgba(0,245,160,0.3)] hover:-translate-y-0.5 active:scale-95 transition-all flex items-center justify-center gap-2">
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-                Trouver un moniteur
+                {user ? "Mon espace →" : "Trouver un moniteur"}
               </Link>
               <Link href="/inscription-moniteur" className="px-8 py-3.5 rounded-xl text-base font-semibold bg-transparent text-foreground border border-border hover:border-primary hover:text-primary hover:-translate-y-0.5 active:scale-95 transition-all flex items-center justify-center gap-2">
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
@@ -248,9 +259,9 @@ export default function Home() {
           Rejoignez NiouDem Drive — inscription gratuite, sans engagement.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center relative z-10">
-          <Link href="/inscription" className="px-8 py-3.5 rounded-xl text-base font-bold bg-gradient-to-r from-[#00F5A0] to-[#00D4FF] text-background hover:shadow-[0_8px_30px_rgba(0,245,160,0.3)] hover:-translate-y-0.5 active:scale-95 transition-all flex items-center justify-center gap-2">
+          <Link href={startHref} className="px-8 py-3.5 rounded-xl text-base font-bold bg-gradient-to-r from-[#00F5A0] to-[#00D4FF] text-background hover:shadow-[0_8px_30px_rgba(0,245,160,0.3)] hover:-translate-y-0.5 active:scale-95 transition-all flex items-center justify-center gap-2">
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-            Trouver un moniteur
+            {user ? "Mon espace →" : "Trouver un moniteur"}
           </Link>
           <Link href="/inscription-moniteur" className="px-8 py-3.5 rounded-xl text-base font-semibold bg-transparent text-foreground border border-border hover:border-primary hover:text-primary hover:-translate-y-0.5 active:scale-95 transition-all flex items-center justify-center gap-2">
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>

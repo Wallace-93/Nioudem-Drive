@@ -64,7 +64,7 @@ export default function DashboardEleve() {
       const { data: prof } = await supabase.from("profiles").select("*").eq("id", user.id).single()
       setProfile(prof)
 
-      const { data: elv } = await supabase.from("élèves").select("*").eq("user_id", user.id).single()
+      const { data: elv } = await supabase.from("eleves").select("*").eq("user_id", user.id).single()
       setEleve(elv)
 
       if (elv) {

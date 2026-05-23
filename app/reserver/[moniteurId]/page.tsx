@@ -68,9 +68,9 @@ export default function ReservationPage() {
       if (!user) { router.push("/connexion"); return }
 
       const { data: prof } = await supabase.from("profiles").select("role").eq("id", user.id).single()
-      if (prof?.role !== "élève") { router.push("/dashboard"); return }
+      if (prof?.role !== "eleve") { router.push("/dashboard"); return }
 
-      const { data: elv } = await supabase.from("élèves").select("*").eq("user_id", user.id).single()
+      const { data: elv } = await supabase.from("eleves").select("*").eq("user_id", user.id).single()
       setEleve(elv)
 
       const { data: mon } = await supabase

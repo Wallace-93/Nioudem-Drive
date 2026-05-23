@@ -20,7 +20,7 @@ export default function DashboardMoniteur() {
   const [reservations, setReservations] = useState<Reservation[]>([])
   const [disponibilites, setDisponibilites] = useState<Record<string, boolean>>({})
   const [loading, setLoading] = useState(true)
-  const [activeTab, setActiveTab] = useState<"overview" | "reservations" | "dispos" | "profil">("overview")
+  const [activeTab, setActiveTab] = useState<"overview" | "réservations" | "dispos" | "profil">("overview")
   const [saving, setSaving] = useState(false)
   const [saveMsg, setSaveMsg] = useState("")
   const router = useRouter()
@@ -38,13 +38,13 @@ export default function DashboardMoniteur() {
       setMoniteur(mon)
 
       if (mon) {
-        const { data: dispos } = await supabase.from("disponibilites").select("*").eq("moniteur_id", mon.id)
+        const { data: dispos } = await supabase.from("disponibilités").select("*").eq("moniteur_id", mon.id)
         const dispoMap: Record<string, boolean> = {}
         dispos?.forEach((d: any) => { dispoMap[`${d.jour_semaine}-${d.creneau}`] = d.actif })
         setDisponibilites(dispoMap)
 
         const { data: res } = await supabase
-          .from("reservations").select(`*, eleves(profiles(prenom, nom))`)
+          .from("réservations").select(`*, eleves(profiles(prenom, nom))`)
           .eq("moniteur_id", mon.id).order("date_heure", { ascending: true })
         setReservations(res || [])
       }
@@ -63,7 +63,7 @@ export default function DashboardMoniteur() {
     const key = `${jour}-${creneau}`
     const newVal = !disponibilites[key]
     setDisponibilites(prev => ({ ...prev, [key]: newVal }))
-    await supabase.from("disponibilites").upsert({
+    await supabase.from("disponibilités").upsert({
       moniteur_id: moniteur.id, jour_semaine: jour, creneau, actif: newVal,
     }, { onConflict: "moniteur_id,jour_semaine,creneau" })
   }
@@ -119,7 +119,7 @@ export default function DashboardMoniteur() {
         </div>
 
         <div className="flex gap-1 bg-card border border-border rounded-xl p-1 mb-8 w-fit overflow-x-auto">
-          {([["overview", "📊 Vue d'ensemble"], ["reservations", "📅 Réservations"], ["dispos", "🗓 Disponibilités"], ["profil", "✏️ Mon profil"]] as const).map(([tab, label]) => (
+          {([["overview", "📊 Vue d'ensemble"], ["réservations", "📅 Réservations"], ["dispos", "🗓 Disponibilités"], ["profil", "✏️ Mon profil"]] as const).map(([tab, label]) => (
             <button key={tab} onClick={() => setActiveTab(tab)}
               className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all active:scale-95 whitespace-nowrap ${activeTab === tab ? "bg-gradient-to-r from-[#00F5A0] to-[#00D4FF] text-background" : "text-muted-foreground hover:text-foreground"}`}>{label}</button>
           ))}
@@ -188,7 +188,7 @@ export default function DashboardMoniteur() {
           </div>
         )}
 
-        {activeTab === "reservations" && (
+        {activeTab === "réservations" && (
           <div className="bg-card border border-border rounded-2xl p-6">
             <h2 className="text-base font-bold mb-5">Toutes mes réservations</h2>
             {reservations.length === 0 ? (
@@ -216,7 +216,7 @@ export default function DashboardMoniteur() {
                           <div className="flex gap-2">
                             <button
                               onClick={async () => {
-                                await supabase.from("reservations").update({ statut: "confirme" }).eq("id", r.id)
+                                await supabase.from("réservations").update({ statut: "confirme" }).eq("id", r.id)
                                 setReservations(prev => prev.map(res => res.id === r.id ? { ...res, statut: "confirme" } : res))
                               }}
                               className="px-3 py-1.5 rounded-lg text-xs font-bold bg-gradient-to-r from-[#00F5A0] to-[#00D4FF] text-background hover:opacity-90 active:scale-95 transition-all">
@@ -224,7 +224,7 @@ export default function DashboardMoniteur() {
                             </button>
                             <button
                               onClick={async () => {
-                                await supabase.from("reservations").update({ statut: "refuse" }).eq("id", r.id)
+                                await supabase.from("réservations").update({ statut: "refuse" }).eq("id", r.id)
                                 setReservations(prev => prev.map(res => res.id === r.id ? { ...res, statut: "refuse" } : res))
                               }}
                               className="px-3 py-1.5 rounded-lg text-xs font-semibold border border-red-500/30 text-red-400 hover:bg-red-500/10 active:scale-95 transition-all">

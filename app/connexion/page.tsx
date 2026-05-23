@@ -5,6 +5,7 @@ export const dynamic = "force-dynamic"
 
 import { useState } from "react"
 import Link from "next/link"
+import { Navbar } from "@/components/navbar"
 import { createClient } from "@/lib/supabase-client"
 import { useRouter } from "next/navigation"
 

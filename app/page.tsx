@@ -58,7 +58,7 @@ export default function Home() {
 
           {/* Contenu central */}
           <div className="text-center flex-1">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-6 bg-primary/10 border border-border text-xs font-semibold text-primary tracking-wide">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-8 mt-4 bg-primary/10 border border-border text-xs font-semibold text-primary tracking-wide">
               <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z"/></svg>
               La plateforme des moniteurs indépendants
             </div>
@@ -193,7 +193,7 @@ export default function Home() {
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="bg-card border border-border rounded-3xl p-8">
-            <h3 className="text-xl font-bold mb-2">Pour les eleves</h3>
+            <h3 className="text-xl font-bold mb-2">Pour les élèves</h3>
             <p className="text-muted-foreground text-sm mb-6 leading-relaxed">
               Finis le choix impose. Trouvez le moniteur qui vous correspond vraiment.
             </p>

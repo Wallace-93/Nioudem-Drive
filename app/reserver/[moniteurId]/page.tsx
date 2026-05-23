@@ -57,6 +57,7 @@ export default function ReservationPage() {
   const [selectedCreneau, setSelectedCreneau] = useState<string | null>(null)
   const [selectedDate, setSelectedDate] = useState<Date | null>(null)
   const [submitting, setSubmitting] = useState(false)
+  const [adresseRdv, setAdresseRdv] = useState("")
   const [error, setError] = useState<string | null>(null)
   const router = useRouter()
   const supabase = createClient()
@@ -67,9 +68,9 @@ export default function ReservationPage() {
       if (!user) { router.push("/connexion"); return }
 
       const { data: prof } = await supabase.from("profiles").select("role").eq("id", user.id).single()
-      if (prof?.role !== "eleve") { router.push("/dashboard"); return }
+      if (prof?.role !== "élève") { router.push("/dashboard"); return }
 
-      const { data: elv } = await supabase.from("eleves").select("*").eq("user_id", user.id).single()
+      const { data: elv } = await supabase.from("élèves").select("*").eq("user_id", user.id).single()
       setEleve(elv)
 
       const { data: mon } = await supabase
@@ -78,7 +79,7 @@ export default function ReservationPage() {
       setMoniteur(mon)
 
       const { data: d } = await supabase
-        .from("disponibilites").select("*")
+        .from("disponibilités").select("*")
         .eq("moniteur_id", moniteurId).eq("actif", true)
       setDispos(d || [])
 
@@ -96,7 +97,7 @@ export default function ReservationPage() {
     const [h, m] = heureFromCreneau(selectedCreneau).split(":")
     dateHeure.setHours(parseInt(h), parseInt(m), 0, 0)
 
-    const { error: resError } = await supabase.from("reservations").insert({
+    const { error: resError } = await supabase.from("réservations").insert({
       eleve_id: eleve.id,
       moniteur_id: moniteur.id,
       date_heure: dateHeure.toISOString(),
@@ -104,6 +105,7 @@ export default function ReservationPage() {
       statut: "en_attente",
       montant: moniteur.tarif_horaire,
       commission: Math.round(moniteur.tarif_horaire * 0.15),
+      adresse_rdv: adresseRdv || null,
     })
 
     if (resError) {
@@ -285,6 +287,24 @@ export default function ReservationPage() {
           <div className="max-w-md mx-auto">
             <h1 className="text-2xl font-black tracking-tight mb-6">Confirmer la réservation</h1>
 
+            {/* Adresse de rendez-vous */}
+            <div className="bg-card border border-border rounded-2xl p-5 mb-5">
+              <label className="text-sm font-bold block mb-2">📍 Point de rendez-vous <span className="text-muted-foreground font-normal">(optionnel)</span></label>
+              <p className="text-xs text-muted-foreground mb-3 leading-relaxed">
+                Par défaut, la leçon démarre depuis votre zone de recherche. Vous pouvez indiquer une adresse différente — le moniteur vérifiera que c'est dans son rayon.
+              </p>
+              <input
+                type="text"
+                id="adresse-rdv"
+                name="adresse-rdv"
+                value={adresseRdv}
+                onChange={(e) => setAdresseRdv(e.target.value)}
+                placeholder="Ex: 15 rue de la Paix, Paris 2e"
+                className="w-full px-4 py-3 rounded-xl bg-background border border-border focus:border-primary focus:outline-none text-sm transition-colors"
+                autoComplete="street-address"
+              />
+            </div>
+
             <div className="bg-card border border-border rounded-2xl p-6 mb-6 flex flex-col gap-4">
               <div className="flex justify-between items-center pb-4 border-b border-border">
                 <span className="text-sm text-muted-foreground">Moniteur</span>
@@ -305,9 +325,15 @@ export default function ReservationPage() {
                 <span className="font-semibold text-sm">45 minutes</span>
               </div>
               <div className="flex justify-between items-center pb-4 border-b border-border">
-                <span className="text-sm text-muted-foreground">Zone</span>
+                <span className="text-sm text-muted-foreground">Zone moniteur</span>
                 <span className="font-semibold text-sm">{moniteur.zone}</span>
               </div>
+              {adresseRdv && (
+                <div className="flex justify-between items-start pb-4 border-b border-border gap-4">
+                  <span className="text-sm text-muted-foreground whitespace-nowrap">Point de RDV</span>
+                  <span className="font-semibold text-sm text-right">{adresseRdv}</span>
+                </div>
+              )}
               <div className="flex justify-between items-center">
                 <span className="text-base font-bold">Total</span>
                 <span className="text-2xl font-black bg-gradient-to-r from-[#00F5A0] to-[#00D4FF] bg-clip-text text-transparent">

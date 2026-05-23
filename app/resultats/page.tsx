@@ -4,6 +4,7 @@ export const dynamic = "force-dynamic"
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
+import { Navbar } from "@/components/navbar"
 import { createClient } from "@/lib/supabase-client"
 
 type Moniteur = {
@@ -113,7 +114,7 @@ export default function Resultats() {
           *,
           profiles (prenom, nom, avatar_url)
         `)
-        .eq("verifie", true)
+        .eq("vérifié", true)
         .order("note_moyenne", { ascending: false })
 
       if (error || !data || data.length === 0) {

@@ -1,4 +1,5 @@
 import Link from "next/link"
+import { Navbar } from "@/components/navbar"
 
 export const metadata = {
   title: "Notre vision — NiouDem Drive",

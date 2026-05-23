@@ -91,9 +91,9 @@ export default function Home() {
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
                 {user ? "Mon espace →" : "Trouver un moniteur"}
               </Link>
-              <Link href="/inscription-moniteur" className="px-8 py-3.5 rounded-xl text-base font-semibold bg-transparent text-foreground border border-border hover:border-primary hover:text-primary hover:-translate-y-0.5 active:scale-95 transition-all flex items-center justify-center gap-2">
+              <Link href={user ? "/dashboard" : "/inscription-moniteur"} className="px-8 py-3.5 rounded-xl text-base font-semibold bg-transparent text-foreground border border-border hover:border-primary hover:text-primary hover:-translate-y-0.5 active:scale-95 transition-all flex items-center justify-center gap-2">
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
-                Je suis moniteur
+                {user ? "Mon espace →" : "Je suis moniteur"}
               </Link>
             </div>
           </div>
@@ -263,9 +263,9 @@ export default function Home() {
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
             {user ? "Mon espace →" : "Trouver un moniteur"}
           </Link>
-          <Link href="/inscription-moniteur" className="px-8 py-3.5 rounded-xl text-base font-semibold bg-transparent text-foreground border border-border hover:border-primary hover:text-primary hover:-translate-y-0.5 active:scale-95 transition-all flex items-center justify-center gap-2">
+          <Link href={user ? "/dashboard" : "/inscription-moniteur"} className="px-8 py-3.5 rounded-xl text-base font-semibold bg-transparent text-foreground border border-border hover:border-primary hover:text-primary hover:-translate-y-0.5 active:scale-95 transition-all flex items-center justify-center gap-2">
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
-            Devenir moniteur partenaire
+            {user ? "Mon espace →" : "Devenir moniteur partenaire"}
           </Link>
         </div>
       </section>

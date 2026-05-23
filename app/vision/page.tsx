@@ -1,12 +1,19 @@
+"use client"
+
 import Link from "next/link"
+import { useEffect, useState } from "react"
+import { createClient } from "@/lib/supabase-client"
 import { Navbar } from "@/components/navbar"
 
-export const metadata = {
-  title: "Notre vision — NiouDem Drive",
-  description: "Pourquoi NiouDem Drive existe, à qui on s'adresse, et comment on repense l'apprentissage de la conduite.",
-}
-
 export default function Vision() {
+  const [user, setUser] = useState<any>(null)
+  const supabase = createClient()
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => setUser(data?.user ?? null))
+  }, [])
+
+  const startHref = user ? "/dashboard" : "/inscription"
   return (
     <div className="font-sans text-foreground overflow-x-hidden min-h-screen">
       {/* NAV */}
@@ -31,8 +38,8 @@ export default function Vision() {
           <Link href="/vision" className="text-primary text-sm font-semibold">Notre vision</Link>
           <Link href="/#comment" className="text-muted-foreground text-sm font-medium hover:text-primary transition-colors">Comment ça marche</Link>
           <Link href="/resultats" className="text-muted-foreground text-sm font-medium hover:text-primary transition-colors">Moniteurs</Link>
-          <Link href="/inscription" className="px-5 py-2 rounded-lg text-sm font-semibold bg-gradient-to-r from-[#00F5A0] to-[#00D4FF] text-background hover:opacity-90 active:scale-95 transition-all">
-            Commencer
+          <Link href={startHref} className="px-5 py-2 rounded-lg text-sm font-semibold bg-gradient-to-r from-[#00F5A0] to-[#00D4FF] text-background hover:opacity-90 active:scale-95 transition-all">
+            {user ? "Mon espace →" : "Commencer"}
           </Link>
         </div>
       </nav>
@@ -189,10 +196,10 @@ export default function Vision() {
           <h2 className="text-2xl font-extrabold mb-3">Vous partagez cette vision ?</h2>
           <p className="text-muted-foreground mb-6 text-sm">Rejoignez NiouDem Drive — que vous soyez élève ou enseignant de la conduite.</p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Link href="/inscription" className="px-7 py-3 rounded-xl text-sm font-bold bg-gradient-to-r from-[#00F5A0] to-[#00D4FF] text-background hover:opacity-90 hover:shadow-[0_4px_20px_rgba(0,245,160,0.3)] transition-all text-center">
+            <Link href={startHref} className="px-7 py-3 rounded-xl text-sm font-bold bg-gradient-to-r from-[#00F5A0] to-[#00D4FF] text-background hover:opacity-90 hover:shadow-[0_4px_20px_rgba(0,245,160,0.3)] transition-all text-center">
               Je cherche un moniteur
             </Link>
-            <Link href="/inscription-moniteur" className="px-7 py-3 rounded-xl text-sm font-semibold border border-border hover:border-primary hover:text-primary transition-all text-center">
+            <Link href={user ? "/dashboard" : "/inscription-moniteur"} className="px-7 py-3 rounded-xl text-sm font-semibold border border-border hover:border-primary hover:text-primary transition-all text-center">
               Je suis enseignant de la conduite
             </Link>
           </div>

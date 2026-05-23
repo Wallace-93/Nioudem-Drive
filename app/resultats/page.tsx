@@ -108,9 +108,14 @@ export default function Resultats() {
   const [moniteurs, setMoniteurs] = useState<Moniteur[]>([])
   const [loading, setLoading] = useState(true)
   const [isDemoMode, setIsDemoMode] = useState(false)
+  const [currentUser, setCurrentUser] = useState<any>(null)
   const [tri, setTri] = useState<SortKey>("score")
   const [budget, setBudget] = useState(90)
   const supabase = createClient()
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => setCurrentUser(data?.user ?? null))
+  }, [])
 
   useEffect(() => {
     async function fetchMoniteurs() {
@@ -171,8 +176,8 @@ export default function Resultats() {
         </Link>
         <div className="hidden md:flex items-center gap-6">
           <Link href="/#comment" className="text-muted-foreground text-sm font-medium hover:text-primary transition-colors">Comment ça marche</Link>
-          <Link href="/inscription" className="px-5 py-2 rounded-lg text-sm font-semibold bg-gradient-to-r from-[#00F5A0] to-[#00D4FF] text-background hover:opacity-90 active:scale-95 transition-all">
-            Commencer
+          <Link href={currentUser ? "/dashboard" : "/inscription"} className="px-5 py-2 rounded-lg text-sm font-semibold bg-gradient-to-r from-[#00F5A0] to-[#00D4FF] text-background hover:opacity-90 active:scale-95 transition-all">
+            {currentUser ? "Mon espace →" : "Commencer"}
           </Link>
         </div>
       </nav>

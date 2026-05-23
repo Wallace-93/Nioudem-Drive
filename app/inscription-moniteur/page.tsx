@@ -848,3 +848,4 @@ export default function InscriptionMoniteurPage() {
     </div>
   )
 }
+fallies.project@gmail.com

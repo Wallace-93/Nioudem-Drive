@@ -176,7 +176,7 @@ export default function AdminPage() {
         <div className="flex gap-1 bg-card border border-border rounded-xl p-1 mb-8 w-fit overflow-x-auto">
           {([
             ["stats", "📊 Statistiques"],
-            ["moniteurs", `🎓 Moniteurs (${stats?.moniteurEnAttente ? `${stats.moniteurEnAttente} en attente` : stats?.totalMoniteurs})`],
+            ["moniteurs", stats?.moniteurEnAttente ? `🎓 Moniteurs (${stats.moniteurEnAttente} en attente)` : `🎓 Moniteurs (${stats?.totalMoniteurs})`],
             ["eleves", `👤 Élèves (${stats?.totalEleves})`],
             ["reservations", `📅 Réservations (${stats?.totalReservations})`],
           ] as const).map(([tab, label]) => (

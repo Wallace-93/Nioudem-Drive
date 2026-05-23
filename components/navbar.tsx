@@ -60,6 +60,9 @@ export function Navbar({ backLink }: { backLink?: { href: string; label: string 
           <>
             <Link href="/vision" className={`text-sm font-medium transition-colors ${pathname === "/vision" ? "text-primary" : "text-muted-foreground hover:text-primary"}`}>Notre vision</Link>
             <Link href="/resultats" className={`text-sm font-medium transition-colors ${pathname === "/resultats" ? "text-primary" : "text-muted-foreground hover:text-primary"}`}>Moniteurs</Link>
+        {user && (
+          <Link href="/messages" className={`text-sm font-medium transition-colors ${pathname?.startsWith("/messages") ? "text-primary" : "text-muted-foreground hover:text-primary"}`}>Messages</Link>
+        )}
           </>
         )}
 

@@ -129,17 +129,19 @@ export default function Resultats() {
           .eq("verifie", true)
           .order("note_moyenne", { ascending: false })
 
-        if (error || !data || data.length === 0) {
-          setMoniteurs(MONITEURS_DEMO)
-          setIsDemoMode(true)
-        } else {
-          const avec_score = data.map((m: any, i: number) => ({
-            ...m,
-            score: Math.max(60, 97 - i * 5),
-          }))
-          setMoniteurs(avec_score)
-          setIsDemoMode(false)
-        }
+        const vrais = (error || !data) ? [] : data.map((m: any, i: number) => ({
+          ...m,
+          score: Math.max(75, 97 - i * 5),
+        }))
+
+        // Toujours afficher les démos en complément des vrais moniteurs
+        const combined = [
+          ...vrais,
+          ...MONITEURS_DEMO.map(d => ({ ...d, score: Math.max(60, d.score! - vrais.length * 3) }))
+        ]
+
+        setMoniteurs(combined)
+        setIsDemoMode(vrais.length === 0)
       } catch (e) {
         setMoniteurs(MONITEURS_DEMO)
         setIsDemoMode(true)

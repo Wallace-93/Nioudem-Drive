@@ -22,14 +22,28 @@ export default function Connexion() {
     setLoading(true)
     setError(null)
 
-    const { error } = await supabase.auth.signInWithPassword({ email, password })
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password })
 
     if (error) {
-      setError("Email ou mot de passe incorrect.")
+      const msg = error.message
+      if (msg.includes("Invalid login") || msg.includes("invalid_credentials")) {
+        setError("Email ou mot de passe incorrect.")
+      } else if (msg.includes("Email not confirmed")) {
+        setError("Veuillez confirmer votre email avant de vous connecter.")
+      } else {
+        setError("Erreur de connexion : " + msg)
+      }
       setLoading(false)
       return
     }
 
+    if (!data.user) {
+      setError("Connexion échouée — réessayez.")
+      setLoading(false)
+      return
+    }
+
+    router.refresh()
     router.push("/dashboard")
   }
 

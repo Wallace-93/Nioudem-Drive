@@ -100,6 +100,7 @@ export default function Connexion() {
 
               <button
                 type="submit"
+                onClick={handleLogin}
                 disabled={loading}
                 className="w-full py-3.5 rounded-xl text-sm font-bold bg-gradient-to-r from-[#00F5A0] to-[#00D4FF] text-background hover:opacity-90 transition-all disabled:opacity-50"
               >

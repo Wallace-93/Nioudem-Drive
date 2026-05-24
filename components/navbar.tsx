@@ -71,41 +71,38 @@ export function Navbar({ backLink }: { backLink?: { href: string; label: string 
           </>
         )}
 
-        {!loading && (
-          user ? (
-            <div className="flex items-center gap-3">
-              <Link href="/dashboard" className="px-5 py-2 rounded-lg text-sm font-semibold bg-gradient-to-r from-[#00F5A0] to-[#00D4FF] text-background hover:opacity-90 active:scale-95 transition-all">
-                Mon espace →
-              </Link>
-              <button onClick={handleLogout} className="text-muted-foreground text-sm font-medium hover:text-primary transition-colors">
-                Déconnexion
-              </button>
-            </div>
-          ) : (
-            <div className="flex items-center gap-3">
-              <Link href="/connexion" className="text-muted-foreground text-sm font-medium hover:text-primary transition-colors">
-                Se connecter
-              </Link>
-              <Link href="/inscription" className="px-5 py-2 rounded-lg text-sm font-semibold bg-gradient-to-r from-[#00F5A0] to-[#00D4FF] text-background hover:opacity-90 active:scale-95 transition-all">
-                Commencer
-              </Link>
-            </div>
-          )
+        {/* Toujours afficher les boutons — se met à jour quand auth est chargé */}
+        {user ? (
+          <div className="flex items-center gap-3">
+            <Link href="/dashboard" className="px-5 py-2 rounded-lg text-sm font-semibold bg-gradient-to-r from-[#00F5A0] to-[#00D4FF] text-background hover:opacity-90 active:scale-95 transition-all">
+              Mon espace →
+            </Link>
+            <button onClick={handleLogout} className="text-muted-foreground text-sm font-medium hover:text-primary transition-colors">
+              Déconnexion
+            </button>
+          </div>
+        ) : (
+          <div className="flex items-center gap-3">
+            <Link href="/connexion" className="text-muted-foreground text-sm font-medium hover:text-primary transition-colors">
+              Se connecter
+            </Link>
+            <Link href="/inscription" className="px-5 py-2 rounded-lg text-sm font-semibold bg-gradient-to-r from-[#00F5A0] to-[#00D4FF] text-background hover:opacity-90 active:scale-95 transition-all">
+              Commencer
+            </Link>
+          </div>
         )}
       </div>
 
       {/* Mobile */}
       <div className="md:hidden">
-        {!loading && (
-          user ? (
-            <Link href="/dashboard" className="px-4 py-2 rounded-lg text-sm font-semibold bg-gradient-to-r from-[#00F5A0] to-[#00D4FF] text-background active:scale-95 transition-all">
-              Mon espace
-            </Link>
-          ) : (
-            <Link href="/inscription" className="px-4 py-2 rounded-lg text-sm font-semibold bg-gradient-to-r from-[#00F5A0] to-[#00D4FF] text-background active:scale-95 transition-all">
-              Commencer
-            </Link>
-          )
+        {user ? (
+          <Link href="/dashboard" className="px-4 py-2 rounded-lg text-sm font-semibold bg-gradient-to-r from-[#00F5A0] to-[#00D4FF] text-background active:scale-95 transition-all">
+            Mon espace
+          </Link>
+        ) : (
+          <Link href="/inscription" className="px-4 py-2 rounded-lg text-sm font-semibold bg-gradient-to-r from-[#00F5A0] to-[#00D4FF] text-background active:scale-95 transition-all">
+            Commencer
+          </Link>
         )}
       </div>
     </nav>

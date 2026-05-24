@@ -2,55 +2,49 @@
 
 export const dynamic = "force-dynamic"
 
-
 import { useState } from "react"
 import Link from "next/link"
-import { Navbar } from "@/components/navbar"
 import { createClient } from "@/lib/supabase-client"
-import { useRouter } from "next/navigation"
 
 export default function Connexion() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const router = useRouter()
   const supabase = createClient()
 
-  async function handleLogin(e?: React.FormEvent) {
-    e?.preventDefault()
+  async function handleLogin() {
     setLoading(true)
     setError(null)
 
-    try {
-      const { data, error } = await supabase.auth.signInWithPassword({ email, password })
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password })
 
-      if (error) {
-        setError("Email ou mot de passe incorrect. (" + error.message + ")")
-        setLoading(false)
-        return
-      }
-
-      if (data?.session) {
-        window.location.replace("/dashboard")
-        return
-      }
-
-      setError("Connexion échouée — session non créée.")
+    if (error) {
+      setError("Email ou mot de passe incorrect.")
       setLoading(false)
-    } catch (err: any) {
-      setError("Erreur inattendue : " + err.message)
+      return
+    }
+
+    if (data.session) {
+      window.location.href = "/dashboard"
+    } else {
+      setError("Connexion échouée. Réessayez.")
       setLoading(false)
     }
   }
 
   return (
     <div className="font-sans text-foreground min-h-screen flex flex-col">
-      {/* NAV */}
-      <nav className="fixed top-0 w-full z-50 px-4 md:px-8 py-4 flex items-center justify-between bg-background/85 backdrop-blur-md border-b border-border">
-        <Link href="/" className="text-xl font-extrabold tracking-tight">
-          <span className="bg-gradient-to-r from-[#00F5A0] to-[#00D4FF] bg-clip-text text-transparent">NiouDem</span>
-          <span className="font-light text-foreground"> Drive</span>
+      <nav className="fixed top-0 w-full z-50 px-4 md:px-8 py-3 flex items-center justify-between bg-background/85 backdrop-blur-md border-b border-border">
+        <Link href="/" className="flex flex-col">
+          <span className="text-xl font-extrabold tracking-tight">
+            <span className="bg-gradient-to-r from-[#00F5A0] to-[#00D4FF] bg-clip-text text-transparent">NiouDem</span>
+            <span className="font-light text-foreground"> Drive</span>
+          </span>
+          <span className="text-[10px] font-black tracking-[0.15em] uppercase"
+            style={{ background: "linear-gradient(135deg,#00F5A0,#00D4FF)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+            auto-école 2.0
+          </span>
         </Link>
       </nav>
 
@@ -64,7 +58,7 @@ export default function Connexion() {
           </div>
 
           <div className="bg-card border border-border rounded-2xl p-8">
-            <form onSubmit={handleLogin} className="flex flex-col gap-5">
+            <div className="flex flex-col gap-5">
               <div>
                 <label htmlFor="email" className="text-sm font-semibold block mb-2">Email</label>
                 <input
@@ -73,9 +67,9 @@ export default function Connexion() {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  required
                   autoComplete="email"
                   placeholder="vous@exemple.com"
+                  onKeyDown={(e) => e.key === 'Enter' && handleLogin()}
                   className="w-full px-4 py-3 rounded-xl bg-background border border-border focus:border-primary focus:outline-none text-sm transition-colors"
                 />
               </div>
@@ -88,9 +82,9 @@ export default function Connexion() {
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  required
                   autoComplete="current-password"
                   placeholder="••••••••"
+                  onKeyDown={(e) => e.key === 'Enter' && handleLogin()}
                   className="w-full px-4 py-3 rounded-xl bg-background border border-border focus:border-primary focus:outline-none text-sm transition-colors"
                 />
               </div>
@@ -109,7 +103,7 @@ export default function Connexion() {
               >
                 {loading ? "Connexion..." : "Se connecter"}
               </button>
-            </form>
+            </div>
 
             <div className="mt-6 pt-6 border-t border-border text-center text-sm text-muted-foreground">
               Pas encore de compte ?{" "}
@@ -127,4 +121,3 @@ export default function Connexion() {
     </div>
   )
 }
-// already has "use client" at top

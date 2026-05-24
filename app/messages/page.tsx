@@ -45,6 +45,7 @@ export default function MessagesPage() {
 
   useEffect(() => {
     async function load() {
+      try {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) { router.push("/connexion"); return }
 
@@ -122,7 +123,11 @@ export default function MessagesPage() {
       )
 
       setConversations(convs)
+    } catch (e) {
+      console.error("Load error:", e)
+    } finally {
       setLoading(false)
+    }
     }
     load()
   }, [])

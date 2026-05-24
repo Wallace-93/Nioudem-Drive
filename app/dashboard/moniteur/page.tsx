@@ -28,27 +28,32 @@ export default function DashboardMoniteur() {
 
   useEffect(() => {
     async function load() {
-      const { data: { user } } = await supabase.auth.getUser()
-      if (!user) { router.push("/connexion"); return }
+      try {
+        const { data: { user } } = await supabase.auth.getUser()
+        if (!user) { router.push("/connexion"); return }
 
-      const { data: prof } = await supabase.from("profiles").select("*").eq("id", user.id).single()
-      setProfile(prof)
+        const { data: prof } = await supabase.from("profiles").select("*").eq("id", user.id).single()
+        setProfile(prof)
 
-      const { data: mon } = await supabase.from("moniteurs").select("*").eq("user_id", user.id).single()
-      setMoniteur(mon)
+        const { data: mon } = await supabase.from("moniteurs").select("*").eq("user_id", user.id).single()
+        setMoniteur(mon)
 
-      if (mon) {
-        const { data: dispos } = await supabase.from("disponibilites").select("*").eq("moniteur_id", mon.id)
-        const dispoMap: Record<string, boolean> = {}
-        dispos?.forEach((d: any) => { dispoMap[`${d.jour_semaine}-${d.creneau}`] = d.actif })
-        setDisponibilites(dispoMap)
+        if (mon) {
+          const { data: dispos } = await supabase.from("disponibilites").select("*").eq("moniteur_id", mon.id)
+          const dispoMap: Record<string, boolean> = {}
+          dispos?.forEach((d: any) => { dispoMap[`${d.jour_semaine}-${d.creneau}`] = d.actif })
+          setDisponibilites(dispoMap)
 
-        const { data: res } = await supabase
-          .from("reservations").select(`*, eleves(profiles(prenom, nom))`)
-          .eq("moniteur_id", mon.id).order("date_heure", { ascending: true })
-        setReservations(res || [])
+          const { data: res } = await supabase
+            .from("reservations").select(`*, eleves(profiles(prenom, nom))`)
+            .eq("moniteur_id", mon.id).order("date_heure", { ascending: true })
+          setReservations(res || [])
+        }
+      } catch (e) {
+        console.error("Dashboard moniteur error:", e)
+      } finally {
+        setLoading(false)
       }
-      setLoading(false)
     }
     load()
   }, [])

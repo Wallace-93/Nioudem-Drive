@@ -50,6 +50,7 @@ export default function ProfilEdition() {
 
   useEffect(() => {
     async function load() {
+      try {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) { router.push("/connexion"); return }
 
@@ -59,7 +60,11 @@ export default function ProfilEdition() {
 
       const { data: mon } = await supabase.from("moniteurs").select("*").eq("user_id", user.id).single()
       setMoniteur(mon)
+    } catch (e) {
+      console.error("Load error:", e)
+    } finally {
       setLoading(false)
+    }
     }
     load()
   }, [])

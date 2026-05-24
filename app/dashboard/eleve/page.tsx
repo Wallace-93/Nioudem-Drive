@@ -58,6 +58,7 @@ export default function DashboardEleve() {
 
   useEffect(() => {
     async function load() {
+      try {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) { router.push("/connexion"); return }
 
@@ -73,7 +74,11 @@ export default function DashboardEleve() {
           .eq("eleve_id", elv.id).order("date_heure", { ascending: false })
         setReservations(res || [])
       }
+    } catch (e) {
+      console.error("Load error:", e)
+    } finally {
       setLoading(false)
+    }
     }
     load()
   }, [])

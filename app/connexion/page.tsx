@@ -69,24 +69,30 @@ export default function Connexion() {
           <div className="bg-card border border-border rounded-2xl p-8">
             <form onSubmit={handleLogin} className="flex flex-col gap-5">
               <div>
-                <label className="text-sm font-semibold block mb-2">Email</label>
+                <label htmlFor="email" className="text-sm font-semibold block mb-2">Email</label>
                 <input
+                  id="email"
+                  name="email"
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
+                  autoComplete="email"
                   placeholder="vous@exemple.com"
                   className="w-full px-4 py-3 rounded-xl bg-background border border-border focus:border-primary focus:outline-none text-sm transition-colors"
                 />
               </div>
 
               <div>
-                <label className="text-sm font-semibold block mb-2">Mot de passe</label>
+                <label htmlFor="password" className="text-sm font-semibold block mb-2">Mot de passe</label>
                 <input
+                  id="password"
+                  name="password"
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
+                  autoComplete="current-password"
                   placeholder="••••••••"
                   className="w-full px-4 py-3 rounded-xl bg-background border border-border focus:border-primary focus:outline-none text-sm transition-colors"
                 />

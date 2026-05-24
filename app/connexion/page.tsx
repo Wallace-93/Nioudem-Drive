@@ -44,7 +44,7 @@ export default function Connexion() {
     }
 
     router.refresh()
-    router.push("/dashboard")
+    window.location.href = "/dashboard"
   }
 
   return (

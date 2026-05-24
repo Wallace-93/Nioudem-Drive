@@ -135,9 +135,10 @@ export default function Resultats() {
         }))
 
         // Toujours afficher les démos en complément des vrais moniteurs
+        // Démos en tête, vrais moniteurs à la fin (remontent au fur et à mesure des inscriptions)
         const combined = [
+          ...MONITEURS_DEMO.map(d => ({ ...d, score: Math.max(60, d.score! - vrais.length * 3) })),
           ...vrais,
-          ...MONITEURS_DEMO.map(d => ({ ...d, score: Math.max(60, d.score! - vrais.length * 3) }))
         ]
 
         setMoniteurs(combined)

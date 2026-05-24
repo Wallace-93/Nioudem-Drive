@@ -18,7 +18,7 @@ export default function Home() {
     <div className="font-sans text-foreground overflow-x-hidden">
       {/* NAV */}
       <nav className="fixed top-0 w-full z-50 px-4 md:px-8 py-3 flex items-center justify-between bg-background/85 backdrop-blur-md border-b border-border">
-        <div className="flex flex-col">
+        <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="flex flex-col text-left">
           <div className="text-xl font-extrabold tracking-tight">
             <span className="bg-gradient-to-r from-[#00F5A0] to-[#00D4FF] bg-clip-text text-transparent">NiouDem</span>
             <span className="font-light text-foreground"> Drive</span>
@@ -37,7 +37,7 @@ export default function Home() {
             </span>
             <div className="w-4 h-px" style={{ background: "linear-gradient(to left, transparent, #00D4FF)", boxShadow: "0 0 4px #00D4FF" }} />
           </div>
-        </div>
+        </button>
         <div className="hidden md:flex items-center gap-8">
           <Link href="/vision" className="text-muted-foreground text-sm font-medium hover:text-primary transition-colors">Notre vision</Link>
           <Link href="#comment" className="text-muted-foreground text-sm font-medium hover:text-primary transition-colors">Comment ça marche</Link>

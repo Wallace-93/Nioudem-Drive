@@ -22,29 +22,26 @@ export default function Connexion() {
     setLoading(true)
     setError(null)
 
-    const { data, error } = await supabase.auth.signInWithPassword({ email, password })
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password })
 
-    if (error) {
-      const msg = error.message
-      if (msg.includes("Invalid login") || msg.includes("invalid_credentials")) {
-        setError("Email ou mot de passe incorrect.")
-      } else if (msg.includes("Email not confirmed")) {
-        setError("Veuillez confirmer votre email avant de vous connecter.")
-      } else {
-        setError("Erreur de connexion : " + msg)
+      if (error) {
+        setError("Email ou mot de passe incorrect. (" + error.message + ")")
+        setLoading(false)
+        return
       }
-      setLoading(false)
-      return
-    }
 
-    if (!data.user) {
-      setError("Connexion échouée — réessayez.")
-      setLoading(false)
-      return
-    }
+      if (data?.session) {
+        window.location.replace("/dashboard")
+        return
+      }
 
-    router.refresh()
-    window.location.href = "/dashboard"
+      setError("Connexion échouée — session non créée.")
+      setLoading(false)
+    } catch (err: any) {
+      setError("Erreur inattendue : " + err.message)
+      setLoading(false)
+    }
   }
 
   return (

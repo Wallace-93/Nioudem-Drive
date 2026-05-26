@@ -26,7 +26,13 @@ export default function Connexion() {
     }
 
     if (data.session) {
+<<<<<<< Updated upstream
       window.location.href = "/dashboard"
+=======
+      // Attendre que la session soit bien enregistrée
+      await new Promise(resolve => setTimeout(resolve, 500))
+      window.location.replace("/dashboard")
+>>>>>>> Stashed changes
     } else {
       setError("Connexion échouée. Réessayez.")
       setLoading(false)

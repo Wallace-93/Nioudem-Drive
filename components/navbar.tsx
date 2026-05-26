@@ -7,17 +7,13 @@ import { useRouter, usePathname } from "next/navigation"
 
 export function Navbar({ backLink }: { backLink?: { href: string; label: string } }) {
   const [user, setUser] = useState<any>(null)
-  const [loading, setLoading] = useState(true)
   const supabase = createClient()
   const router = useRouter()
   const pathname = usePathname()
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => {
-      setUser(data?.user ?? null)
-      setLoading(false)
-    })
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    supabase.auth.getUser().then(({ data }) => setUser(data?.user ?? null))
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_e, session) => {
       setUser(session?.user ?? null)
     })
     return () => subscription.unsubscribe()
@@ -31,7 +27,6 @@ export function Navbar({ backLink }: { backLink?: { href: string; label: string 
 
   return (
     <nav className="fixed top-0 w-full z-50 px-4 md:px-8 py-3 flex items-center justify-between bg-background/85 backdrop-blur-md border-b border-border">
-      {/* Logo */}
       <Link href="/" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="flex flex-col">
         <span className="text-xl font-extrabold tracking-tight">
           <span className="bg-gradient-to-r from-[#00F5A0] to-[#00D4FF] bg-clip-text text-transparent">NiouDem</span>
@@ -49,7 +44,6 @@ export function Navbar({ backLink }: { backLink?: { href: string; label: string 
         </span>
       </Link>
 
-      {/* Desktop nav */}
       <div className="hidden md:flex items-center gap-6">
         {backLink ? (
           <Link href={backLink.href} className="text-muted-foreground text-sm hover:text-primary transition-colors">
@@ -57,21 +51,12 @@ export function Navbar({ backLink }: { backLink?: { href: string; label: string 
           </Link>
         ) : (
           <>
-            <Link href="/vision" className={`text-sm font-medium transition-colors ${pathname === "/vision" ? "text-primary" : "text-muted-foreground hover:text-primary"}`}>
-              Notre vision
-            </Link>
-            <Link href="/resultats" className={`text-sm font-medium transition-colors ${pathname === "/resultats" ? "text-primary" : "text-muted-foreground hover:text-primary"}`}>
-              Moniteurs
-            </Link>
-            {user && (
-              <Link href="/messages" className={`text-sm font-medium transition-colors ${pathname?.startsWith("/messages") ? "text-primary" : "text-muted-foreground hover:text-primary"}`}>
-                Messages
-              </Link>
-            )}
+            <Link href="/vision" className={`text-sm font-medium transition-colors ${pathname === "/vision" ? "text-primary" : "text-muted-foreground hover:text-primary"}`}>Notre vision</Link>
+            <Link href="/resultats" className={`text-sm font-medium transition-colors ${pathname === "/resultats" ? "text-primary" : "text-muted-foreground hover:text-primary"}`}>Moniteurs</Link>
+            {user && <Link href="/messages" className={`text-sm font-medium transition-colors ${pathname?.startsWith("/messages") ? "text-primary" : "text-muted-foreground hover:text-primary"}`}>Messages</Link>}
           </>
         )}
 
-        {/* Toujours afficher les boutons — se met à jour quand auth est chargé */}
         {user ? (
           <div className="flex items-center gap-3">
             <Link href="/dashboard" className="px-5 py-2 rounded-lg text-sm font-semibold bg-gradient-to-r from-[#00F5A0] to-[#00D4FF] text-background hover:opacity-90 active:scale-95 transition-all">
@@ -93,7 +78,6 @@ export function Navbar({ backLink }: { backLink?: { href: string; label: string 
         )}
       </div>
 
-      {/* Mobile */}
       <div className="md:hidden">
         {user ? (
           <Link href="/dashboard" className="px-4 py-2 rounded-lg text-sm font-semibold bg-gradient-to-r from-[#00F5A0] to-[#00D4FF] text-background active:scale-95 transition-all">

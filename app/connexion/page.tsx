@@ -57,63 +57,47 @@ export default function Connexion() {
             <p className="text-muted-foreground text-sm">Connectez-vous à votre compte NiouDem Drive</p>
           </div>
 
-          <div className="bg-card border border-border rounded-2xl p-8">
-            <div className="flex flex-col gap-5">
-              <div>
-                <label htmlFor="email" className="text-sm font-semibold block mb-2">Email</label>
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  autoComplete="email"
-                  placeholder="vous@exemple.com"
-                  onKeyDown={(e) => e.key === 'Enter' && handleLogin()}
-                  className="w-full px-4 py-3 rounded-xl bg-background border border-border focus:border-primary focus:outline-none text-sm transition-colors"
-                />
-              </div>
-
-              <div>
-                <label htmlFor="password" className="text-sm font-semibold block mb-2">Mot de passe</label>
-                <input
-                  id="password"
-                  name="password"
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  autoComplete="current-password"
-                  placeholder="••••••••"
-                  onKeyDown={(e) => e.key === 'Enter' && handleLogin()}
-                  className="w-full px-4 py-3 rounded-xl bg-background border border-border focus:border-primary focus:outline-none text-sm transition-colors"
-                />
-              </div>
-
-              {error && (
-                <div className="bg-red-500/10 border border-red-500/30 rounded-xl px-4 py-3 text-sm text-red-400">
-                  {error}
-                </div>
-              )}
-
-              <button
-                type="button"
-                onClick={handleLogin}
-                disabled={loading}
-                className="w-full py-3.5 rounded-xl text-sm font-bold bg-gradient-to-r from-[#00F5A0] to-[#00D4FF] text-background hover:opacity-90 transition-all disabled:opacity-50"
-              >
-                {loading ? "Connexion..." : "Se connecter"}
-              </button>
+          <div className="bg-card border border-border rounded-2xl p-8 flex flex-col gap-5">
+            <div>
+              <label htmlFor="email" className="text-sm font-semibold block mb-2">Email</label>
+              <input
+                id="email" name="email" type="email"
+                value={email} onChange={(e) => setEmail(e.target.value)}
+                autoComplete="email" placeholder="vous@exemple.com"
+                onKeyDown={(e) => e.key === 'Enter' && handleLogin()}
+                className="w-full px-4 py-3 rounded-xl bg-background border border-border focus:border-primary focus:outline-none text-sm transition-colors"
+              />
             </div>
 
-            <div className="mt-6 pt-6 border-t border-border text-center text-sm text-muted-foreground">
+            <div>
+              <label htmlFor="password" className="text-sm font-semibold block mb-2">Mot de passe</label>
+              <input
+                id="password" name="password" type="password"
+                value={password} onChange={(e) => setPassword(e.target.value)}
+                autoComplete="current-password" placeholder="••••••••"
+                onKeyDown={(e) => e.key === 'Enter' && handleLogin()}
+                className="w-full px-4 py-3 rounded-xl bg-background border border-border focus:border-primary focus:outline-none text-sm transition-colors"
+              />
+            </div>
+
+            {error && (
+              <div className="bg-red-500/10 border border-red-500/30 rounded-xl px-4 py-3 text-sm text-red-400">
+                {error}
+              </div>
+            )}
+
+            <button
+              type="button" onClick={handleLogin} disabled={loading}
+              className="w-full py-3.5 rounded-xl text-sm font-bold bg-gradient-to-r from-[#00F5A0] to-[#00D4FF] text-background hover:opacity-90 transition-all disabled:opacity-50"
+            >
+              {loading ? "Connexion..." : "Se connecter"}
+            </button>
+
+            <div className="pt-4 border-t border-border text-center text-sm text-muted-foreground">
               Pas encore de compte ?{" "}
-              <Link href="/inscription" className="text-primary font-semibold hover:underline">
-                Créer un compte élève
-              </Link>
+              <Link href="/inscription" className="text-primary font-semibold hover:underline">Créer un compte élève</Link>
               {" · "}
-              <Link href="/inscription-moniteur" className="text-primary font-semibold hover:underline">
-                Je suis moniteur
-              </Link>
+              <Link href="/inscription-moniteur" className="text-primary font-semibold hover:underline">Je suis moniteur</Link>
             </div>
           </div>
         </div>

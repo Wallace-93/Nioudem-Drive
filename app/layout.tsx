@@ -4,18 +4,12 @@ import { MobileNav } from '@/components/mobile-nav'
 
 export const metadata: Metadata = {
   title: 'NiouDem Drive',
-  description: 'Trouvez votre moniteur auto-école idéal en Île-de-France. Matching intelligent, réservation en ligne, progression suivie.',
+  description: 'Trouvez votre moniteur auto-école idéal en Île-de-France.',
   manifest: '/manifest.json',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'black-translucent',
     title: 'NiouDem Drive',
-  },
-  formatDetection: { telephone: false },
-  openGraph: {
-    title: 'NiouDem Drive',
-    description: 'La plateforme des moniteurs indépendants en Île-de-France',
-    type: 'website',
   },
 }
 
@@ -38,7 +32,6 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/icons/icon-192.png" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-        <meta name="mobile-web-app-capable" content="yes" />
       </head>
       <body className="antialiased pb-safe">
         {children}

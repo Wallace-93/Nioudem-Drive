@@ -12,19 +12,23 @@ export default function Dashboard() {
 
   useEffect(() => {
     async function redirect() {
-      const { data: { user } } = await supabase.auth.getUser()
-      if (!user) { router.push("/connexion"); return }
+      try {
+        const { data: { session } } = await supabase.auth.getSession()
+        if (!session) { router.push("/connexion"); return }
 
-      const { data: profile } = await supabase
-        .from("profiles")
-        .select("role")
-        .eq("id", user.id)
-        .single()
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("role")
+          .eq("id", session.user.id)
+          .single()
 
-      if (profile?.role === "moniteur") {
-        router.push("/dashboard/moniteur")
-      } else {
-        router.push("/dashboard/eleve")
+        if (profile?.role === "moniteur") {
+          router.push("/dashboard/moniteur")
+        } else {
+          router.push("/dashboard/eleve")
+        }
+      } catch (e) {
+        router.push("/connexion")
       }
     }
     redirect()

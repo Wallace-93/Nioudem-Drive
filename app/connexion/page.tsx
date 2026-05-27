@@ -11,12 +11,15 @@ export default function Connexion() {
   const [password, setPassword] = useState("")
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const supabase = createClient()
 
   async function handleLogin() {
     setLoading(true)
     setError(null)
+<<<<<<< Updated upstream
 
+=======
+    const supabase = createClient()
+>>>>>>> Stashed changes
     const { data, error } = await supabase.auth.signInWithPassword({ email, password })
 
     if (error) {
@@ -27,10 +30,15 @@ export default function Connexion() {
 
     if (data.session) {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
       window.location.href = "/dashboard"
 =======
       // Attendre que la session soit bien enregistrée
       await new Promise(resolve => setTimeout(resolve, 500))
+      window.location.replace("/dashboard")
+>>>>>>> Stashed changes
+=======
+      await new Promise(r => setTimeout(r, 500))
       window.location.replace("/dashboard")
 >>>>>>> Stashed changes
     } else {
@@ -66,6 +74,7 @@ export default function Connexion() {
           <div className="bg-card border border-border rounded-2xl p-8 flex flex-col gap-5">
             <div>
               <label htmlFor="email" className="text-sm font-semibold block mb-2">Email</label>
+<<<<<<< Updated upstream
               <input
                 id="email" name="email" type="email"
                 value={email} onChange={(e) => setEmail(e.target.value)}
@@ -73,10 +82,18 @@ export default function Connexion() {
                 onKeyDown={(e) => e.key === 'Enter' && handleLogin()}
                 className="w-full px-4 py-3 rounded-xl bg-background border border-border focus:border-primary focus:outline-none text-sm transition-colors"
               />
+=======
+              <input id="email" name="email" type="email" value={email}
+                onChange={(e) => setEmail(e.target.value)} autoComplete="email"
+                placeholder="vous@exemple.com"
+                onKeyDown={(e) => e.key === 'Enter' && handleLogin()}
+                className="w-full px-4 py-3 rounded-xl bg-background border border-border focus:border-primary focus:outline-none text-sm transition-colors" />
+>>>>>>> Stashed changes
             </div>
 
             <div>
               <label htmlFor="password" className="text-sm font-semibold block mb-2">Mot de passe</label>
+<<<<<<< Updated upstream
               <input
                 id="password" name="password" type="password"
                 value={password} onChange={(e) => setPassword(e.target.value)}
@@ -84,6 +101,13 @@ export default function Connexion() {
                 onKeyDown={(e) => e.key === 'Enter' && handleLogin()}
                 className="w-full px-4 py-3 rounded-xl bg-background border border-border focus:border-primary focus:outline-none text-sm transition-colors"
               />
+=======
+              <input id="password" name="password" type="password" value={password}
+                onChange={(e) => setPassword(e.target.value)} autoComplete="current-password"
+                placeholder="••••••••"
+                onKeyDown={(e) => e.key === 'Enter' && handleLogin()}
+                className="w-full px-4 py-3 rounded-xl bg-background border border-border focus:border-primary focus:outline-none text-sm transition-colors" />
+>>>>>>> Stashed changes
             </div>
 
             {error && (
@@ -92,10 +116,15 @@ export default function Connexion() {
               </div>
             )}
 
+<<<<<<< Updated upstream
             <button
               type="button" onClick={handleLogin} disabled={loading}
               className="w-full py-3.5 rounded-xl text-sm font-bold bg-gradient-to-r from-[#00F5A0] to-[#00D4FF] text-background hover:opacity-90 transition-all disabled:opacity-50"
             >
+=======
+            <button type="button" onClick={handleLogin} disabled={loading}
+              className="w-full py-3.5 rounded-xl text-sm font-bold bg-gradient-to-r from-[#00F5A0] to-[#00D4FF] text-background hover:opacity-90 transition-all disabled:opacity-50">
+>>>>>>> Stashed changes
               {loading ? "Connexion..." : "Se connecter"}
             </button>
 
